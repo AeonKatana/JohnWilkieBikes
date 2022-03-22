@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Registration</title>
+
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+		integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+	<style>
+		
+	</style>
+</head>
+
+<body>
+
+	
+	<div class="mycard card p-2 my-5" style="margin-left: auto;margin-right:auto;min-width:25rem;max-width:30rem;">
+		<div class="justify-content-center text-center" >
+      <img th:src="@{/images/jw.png}" alt="" style="width: 200px;"><br>
+       <img th:src="@{/images/reg5.png}" alt="" style="width: 400px;">
+ 		</div>
+		<form id="regform" th:action="register" method="POST">
+			<div class="myform overflow-auto">
+				<div class="row m-2">
+					<div class="col">
+						<input type="text" name="fname" id="fname" class="form-control" placeholder="First name" required>
+					</div>
+					<div class="col">
+						<input type="text" name="lname" id="lname" class="form-control" placeholder="Last name" required>
+					</div>
+				</div>
+				<div class="row m-2">
+					<div class="col">
+						<input type="email" name="email" id="email" class="form-control" placeholder="Email Address " required>
+					</div>
+				</div>
+				<div class="row m-2">
+					<div class="col">
+						<input type="text" name="username" id="username" class="form-control" placeholder="Username" required>
+					</div>
+				</div>
+				<div class="row m-2">
+					<div class="col">
+						<input type="password" name="password" id="pass" class="form-control" placeholder="Password" required>
+					</div>
+				</div>
+				<div class="row m-2">
+					<div class="col">
+						<input type="password" name="repass" id="repass" class="form-control"
+							placeholder="Re-type password" required>
+					</div>
+				</div>
+				<div class="row m-2">
+					<div class="col-4">
+						<input type="number" name="streetno" class="form-control street" placeholder="Street No."
+							min="0" required>
+					</div>
+					<div class="col-8">
+						<input type="text" name="streetname"  class="form-control streetname"
+							placeholder="Street Name" required>
+					</div>
+				</div>
+				<div class="row m-2">
+					<div class="col-5">
+						<input type="text" name="baranngay" id="baranggay" required class="form-control street" placeholder="Baranggay">
+					</div>
+					<div class="col-7">
+						<input type="text" name="city" id="city"  class="form-control streetname" placeholder="City" required>
+					</div>
+				</div>
+				<div class="row m-2">
+					<div class="col">
+						<input type="number" name="zipcode" id="zipcode" class="form-control streetname"
+							placeholder="Zip Code" required>
+					</div>
+				</div>
+			</div>
+			<div class="row m-2">
+				<div class="col">
+					<input type="submit" id="register" class="form-control btn btn-success" value="Register">
+				</div>
+			</div>
+
+		</form>
+	</div>
+
+	<script th:src="@{/js/jquery-3.6.0.min.js}"></script>
+	<script>
+
+	$(document).ready(function(){
+		
+		$("#register").prop("disabled",true);
+		
+		$("#pass").keyup(function(){
+			if($(this).val() === $("#repass").val() && $(this).val() !== ""){
+				$(this).css({"border" : "2px solid green"});
+				$("#repass").css({"border" : "2px solid green"});
+				$("#register").prop("disabled",false);
+			}
+			else{
+				$("#repass").css({"border" : "2px solid red"});
+				$("#register").prop("disabled",true);
+			}
+		});
+		
+		$("#repass").keyup(function(){
+			if($(this).val() === $("#pass").val() && $(this).val() !== ""){
+				$(this).css({"border" : "2px solid green"});
+				$("#register").prop("disabled",false);
+			}
+			else{
+				$(this).css({"border" : "2px solid red"});
+				$("#register").prop("disabled",true);
+			}
+		})
+		
+		$("#regform").submit(function () {
+			$.post($(this).attr('action'), $(this).serialize(), function(result){
+				alert(result);
+			});
+			return false;
+		}); 
+
+	});
+		
+	</script>
+
+</body>
+
+</html>
