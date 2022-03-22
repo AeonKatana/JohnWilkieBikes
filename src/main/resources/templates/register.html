@@ -211,9 +211,9 @@
 										}
 									});
 							
-							$("#register").click(function(){
-								$(this).text("Please wait");
-								$(this).prop("disabled", true);
+							$("#regform").submit(function(e){
+								$(this).find("#register").val("Please wait");
+							//	$(this).find("#register").prop("disabled", true);
 							});
 
 						});
