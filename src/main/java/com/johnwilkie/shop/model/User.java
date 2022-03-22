@@ -29,6 +29,16 @@ public class User {
   
   private String email;
   
+  public String getVerifytoken() {
+	return verifytoken;
+}
+
+public void setVerifytoken(String verifytoken) {
+	this.verifytoken = verifytoken;
+}
+
+private String verifytoken;
+  
   private long contactno;
   
   private boolean enabled;

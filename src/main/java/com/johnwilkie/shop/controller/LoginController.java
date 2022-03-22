@@ -8,10 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 public class LoginController {
-  @RequestMapping({"/register-page"})
-  public String registerPage() {
-    return "register";
-  }
+
   
   @RequestMapping({"/perform-logout"})
   public String logout() {

@@ -68,17 +68,23 @@
 		</nav>
 	</div>
 	
-	<div class="container card text-center p-4 mx-auto my-5">
+	<div th:if="${user != null}" class="container card text-center p-4 mx-auto my-5">
 		<img src="https://ik.imagekit.io/aeonkatana/jw_WCsj88EP4a.png?ik-sdk-version=javascript-1.4.3&updatedAt=1644313805858" width="250px;" style="margin-left:auto;margin-right:auto;">
-		
-		<h3 class="m-3">Thank you [[${name}]] for registering to John Wilkie's Online Bike Shop!</h3>
-		<p class="m-2">An email was sent to your email address</p>
-		<p class="m-2">Please check your email to verify your account</p>
+		<i class="fa-solid fa-shield-check fa-3x"></i>
+		<h3 class="m-3">Your Account is now verified!</h3>
+		<p class="m-2">You may click the button down below to login</p>
 		<div class="m-2">
-			<a th:href="@{/}" class="btn btn-success w-25">Home</a>
+			<a th:href="@{/login-page}" class="btn btn-success w-25">Login Page</a>
 		</div>
-		
-	
+	</div>
+	<div th:unless="${user != null}" class="container card text-center p-4 mx-auto my-5">
+		<img src="https://ik.imagekit.io/aeonkatana/jw_WCsj88EP4a.png?ik-sdk-version=javascript-1.4.3&updatedAt=1644313805858" width="250px;" style="margin-left:auto;margin-right:auto;">
+		<i class="fa-solid fa-shield-check fa-3x"></i>
+		<h3 class="m-3">Invalid Token</h3>
+		<p class="m-2">It may be the token doesn't exist or the user is already been verified</p>
+		<div class="m-2">
+			<a th:href="@{/register-page}" class="btn btn-warning w-25">Create an account</a>
+		</div>
 	</div>
 	
 
