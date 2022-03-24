@@ -29,7 +29,14 @@ public class User {
   
   private String email;
   
-  public String getVerifytoken() {
+
+
+private String verifytoken;
+  
+private String passwordtoken;
+
+
+public String getVerifytoken() {
 	return verifytoken;
 }
 
@@ -37,9 +44,21 @@ public void setVerifytoken(String verifytoken) {
 	this.verifytoken = verifytoken;
 }
 
-private String verifytoken;
-  
-  private long contactno;
+
+
+
+public String getPasswordtoken() {
+	return passwordtoken;
+}
+
+public void setPasswordtoken(String passwordtoken) {
+	this.passwordtoken = passwordtoken;
+}
+
+
+
+
+private long contactno;
   
   private boolean enabled;
   

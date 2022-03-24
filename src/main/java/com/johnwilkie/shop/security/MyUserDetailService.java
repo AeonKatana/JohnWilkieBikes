@@ -14,8 +14,8 @@ public class MyUserDetailService implements UserDetailsService {
   @Autowired
   private UserRepo repo;
   
-  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    User user = this.repo.findByUsername(username);
+  public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    User user = this.repo.findByEmail(email);
     if (user == null)
       throw new UsernameNotFoundException("Could not found user with that Username"); 
     return new MyUserDetails(user);
