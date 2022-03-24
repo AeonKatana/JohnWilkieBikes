@@ -44,8 +44,8 @@
 	<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static"
 		data-bs-keyboard="false" tabindex="-1"
 		aria-labelledby="staticBackdropLabel" aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered w-25">
-		<form id="forgot" class="text-center">
+		<div class="modal-dialog modal-dialog-centered">
+		<form id="forgot" class="modal-content">
 			<div class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title" id="staticBackdropLabel">Forgot
@@ -58,14 +58,13 @@
 						<p class="text-center" style="display:none;" id="fail"><i class="fa-solid fa-xmark"></i> Unrecognized Email!</p>
 						<div class="input-group mb-2 mr-sm-2 text-center justify-content-center">
 							<div class="input-group-prepend">
-								<div class="input-group-text text-center"><i class="fa-solid fa-envelope"></i></div>
+								<div class="input-group-text"><i class="fa-solid fa-envelope"></i></div>
 							</div>
 							<input type="text" class="form-control"
 								id="email" placeholder="Email">
 						</div>			
 				</div>
 				<div class="modal-footer justify-content-center">
-					
 					<button type="submit" id="verifybtn" class="btn btn-primary">Send Verification</button>
 				</div>
 			</div>

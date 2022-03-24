@@ -19,12 +19,12 @@ $(document).ready(function(){
 			success : function(result){
 				if(result == true){
 					$("#succ").css("display" , "block");
-					$(this).find("#verifybtn").text("Done");
+					$("#verifybtn").text("Done");
 				}
 				else{
 					$("#fail").css("display", "block");
-					$(this).find("#verifybtn").text("Retry");
-					$(this).find("#verifybtn").prop("disabled", false);
+					$("#verifybtn").text("Retry");
+					$("#verifybtn").prop("disabled", false);
 				}
 			}
 		});
