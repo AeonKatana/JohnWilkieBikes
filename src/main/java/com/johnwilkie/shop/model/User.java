@@ -2,6 +2,7 @@ package com.johnwilkie.shop.model;
 
 import java.util.Arrays;
 import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,6 +11,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class User {
@@ -63,12 +67,15 @@ private long contactno;
   private boolean enabled;
   
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "userid", cascade = {CascadeType.ALL}, orphanRemoval = true)
+  @JsonManagedReference
   private Set<Cart> usercart;
   
   @OneToMany(mappedBy = "user")
+  @JsonManagedReference
   private Set<Orders> orders;
   
   @OneToOne(mappedBy = "user")
+  @JsonIgnore
   private UserAddress address;
   
   public void setId(long id) {

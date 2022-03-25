@@ -96,7 +96,7 @@ $(document).ready(function () {
 			$(".remover").click(function () { // Delete Cart Item
 				let prodId = $(this).attr("pid");
 				
-				let thiscart = $(this).parent().parent().attr("pid");
+				let thiscart = $(this).attr("pid");
 				//	alert("Cart ID : " + prodId);
 			let varid = $(this).attr("vid");
 
@@ -105,13 +105,14 @@ $(document).ready(function () {
 					url: "/mycart/delete/" + prodId + "/"  + varid,
 					contentType: "application/json",
 					success: function (result) {
-						$("#cartbox" + thiscart).fadeOut(1000, function () {
+						$("#cartbox" + thiscart).fadeOut(1000, function() {
+							console.log(result);
 							location.reload();
 						});
 					}
 				});
 			});
-
+	
 
 
 			$("#checkout").click(function () {

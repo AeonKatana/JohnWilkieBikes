@@ -8,6 +8,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 public class BikeCategory {
   @Id
@@ -16,10 +19,12 @@ public class BikeCategory {
   
   @ManyToOne
   @JoinColumn(name = "category")
+  @JsonIgnoreProperties("category")
   private ProdCategory category;
   
   @ManyToOne
   @JoinColumn(name = "bike_id")
+  @JsonIgnore
   private BikeProduct bikeprod;
   
   public BikeCategory() {}

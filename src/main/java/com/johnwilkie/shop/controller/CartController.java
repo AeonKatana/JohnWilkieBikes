@@ -23,9 +23,11 @@ public class CartController {
   @RequestMapping({"/mycart/checkout"})
   public String toCheckoutPage(@AuthenticationPrincipal MyUserDetails userdetail, Model model) {
     User user = userdetail.getUser();
-    if (user == null)
-      return "redirect:/login-page"; 
     List<Cart> cart = this.cartservice.getUserCart(user);
+    System.out.println(cart);
+    if(cart.isEmpty()) {
+    	return "redirect:/mycart";
+    }
     model.addAttribute("cartcheck", cart);
     model.addAttribute("user", user);
     return "checkout";

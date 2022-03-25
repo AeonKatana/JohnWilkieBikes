@@ -11,6 +11,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Orders {
   @Id
@@ -110,10 +113,12 @@ public class Orders {
   private LocalDateTime datetime;
   
   @ManyToOne
+  @JsonIgnore
   @JoinColumn(name = "bike_id")
   private BikeProduct bikeprod;
   
   @ManyToOne
+  @JsonBackReference
   @JoinColumn(name = "customer_id")
   private User user;
   

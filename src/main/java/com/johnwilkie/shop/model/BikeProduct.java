@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,6 +16,13 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 @Entity
 @Table(name = "bikeproduct")
@@ -42,18 +50,22 @@ public class BikeProduct {
   private Set<BikeCategory> category;
   
   @OneToMany(mappedBy = "bikeprod", cascade = {CascadeType.ALL})
+
   private Set<Orders> orders;
   
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "bikeprod", cascade = {CascadeType.ALL})
   private Set<Cart> prodcart;
   
   @OneToMany(mappedBy = "bikeprod")
+  @JsonManagedReference
   private Set<BikeProdVariation> variation;
   
   @Transient
+  @JsonSerialize
   private int prodstock;
   
   @Transient
+  @JsonSerialize
   private String pricerange;
   
   public void setId(long id) {

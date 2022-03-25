@@ -30,7 +30,7 @@ a:hover {
 </head>
 
 <body>
-	<div class="card m-0">
+	<div class="m-0">
 		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 			<a class="navbar-brand" th:href="@{/}"><img src="https://ik.imagekit.io/aeonkatana/logo2_HGKTtB_eC.png?ik-sdk-version=javascript-1.4.3&updatedAt=1644313806003" alt="" width="100px"></a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01"
@@ -63,7 +63,7 @@ a:hover {
 						<a class="nav-link" th:href="@{/orders/mydelivery}" tabindex="-1" aria-disabled="true"> <i class="fa-solid fa-bag-shopping text-light mx-1"></i>Purchases</a>
 					</li>
 					<li class="nav-item mr-5">
-						<a class="nav-link" href="#" sec:authorize="isAuthenticated()">My Profile</a>
+						<a class="nav-link" href="#" sec:authorize="isAuthenticated()"><i class="fa-solid text-light fa-user"> </i> My Profile</a>
 						<a class="nav-link" th:href="@{/login-page}" sec:authorize="!isAuthenticated()">Login</a>
 					</li>
 
@@ -92,32 +92,28 @@ a:hover {
 
 		<div class="border mx-2 p-2 text-center" style="height: auto;">
 
-			<div id="orderbox" th:if="${totalpage != 0}">
-				<table class="table table-stripe rounded shadow-sm  table-hover"
-					id="mytable">
-					<thead class="thead-dark">
-						<tr>
-
-							<th scope="col">Image</th>
-							<th scope="col">Product Name</th>
-							<th scope="col">Variation</th>
-							<th scope="col">Price</th>
-							<th scope="col">Date</th>
-							<th scope="col">Action</th>
-
-						</tr>
-					</thead>
-					<tbody>
-						<tr th:each="order : ${orders}">
-							<td th:text="${order.bikeprod.prodimgurl}"></td>
-							<td th:text="${order.bikeprod.prodname}"></td>
-							<td th:text="${order.variation}"></td>
-							<td th:text="${order.price}" class="price"></td>
-							<td th:text="${order.datetime}"></td>
-							<td><button class="btn btn-danger">Cancel</button></td>
-						</tr>
-					</tbody>
-				</table>
+			<div id="orderbox d-flex flex-wrap" th:if="${totalpage != 0}">
+				<div class="card d-flex m-2" th:each="order : ${orders}">
+				<div class="row no-gutters">
+					<button class="btn btn-danger remover"style="z-index: 1;position:absolute;right:0;">Cancel</button>
+					<div class="col-md-4">
+						<img th:src="@{/images/bikebg.jpg}" alt="" class="card-img" width="100%" height="100%;">
+					</div>
+					<div class="col-md-8">
+						<div class="card-body text-center">
+							<h5 class="m-2 card-title"
+								th:text="${order.bikeprod.prodname}">Sample Item 1</h5>
+								
+						<p class="m-2" th:text="${'Variation :' + order.variation}"></p>
+						<p class="m-2" th:text="${'Quantity : ' + order.quantity}">Stocks</p>
+						<p class="m-2 price" th:text="${order.price}"> 5,000</p>
+						<p class="m-2 " th:text="${'Placed on :' + #temporals.monthNameShort(order.datetime) + ' ' + #temporals.day(order.datetime) + ' ' + #temporals.year(order.datetime)}"> 5,000</p>
+						<p class="m-2 " th:text="${'Expected on :' + #temporals.monthNameShort(order.datetime.plusDays(10)) + ' ' + #temporals.day(order.datetime.plusDays(10)) + ' ' + #temporals.year(order.datetime.plusDays(10))}"> Some date</p>
+							
+						</div>
+					</div>
+				
+				</div>
 				<div class="text-left" >
 					<nav aria-label="Page navigation example" class="mypage">
 						<ul class="pagination justify-content-left my-5" th:if="${totalpage > 1}" id="normal">
@@ -129,7 +125,9 @@ a:hover {
 					</nav>
 				</div>
 			</div>
-			<div class="my-3 " th:unless="${totalpage != 0}">
+			
+		</div>
+			<div class="my-3" th:unless="${totalpage != 0}">
 				<div class="card m-2 " style="min-width: 50%;">
 					<div class="card-body mt-5">
 							<i class="fa-solid fa-face-frown fa-2x text-secondary"></i>
@@ -137,13 +135,11 @@ a:hover {
 					</div>
 				</div>
 			</div>
-		</div>
-
 	</div>
 
 
 
-
+</div>
 
 
 

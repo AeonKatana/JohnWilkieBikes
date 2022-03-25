@@ -105,10 +105,13 @@ xmlns="http://www.w3.org/1999/xhtml"
 						<a class="nav-link" th:href="@{/orders/mydelivery}" tabindex="-1" aria-disabled="true"> <i class="fa-solid fa-bag-shopping text-light mx-1"></i>Purchases</a>
 					</li>
 					<li class="nav-item mr-5">
-						<a class="nav-link" href="#" sec:authorize="isAuthenticated()">My Profile</a>
+						<a class="nav-link" href="#" sec:authorize="isAuthenticated()"> <i class="fa-solid text-light fa-user"></i>  My Profile</a>
+						
 						<a class="nav-link" th:href="@{/login-page}" sec:authorize="!isAuthenticated()">Login</a>
 					</li>
-
+					<li class="nav-item mr-5" sec:authorize="hasAuthority('ADMIN')">
+					  <a class="nav-link" th:href="@{/admin/dashboard}" ><i class="fa-solid fa-terminal"></i> Admin</a>
+					</li>
 					
 
 				</ul>

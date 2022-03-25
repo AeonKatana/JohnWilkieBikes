@@ -1,14 +1,17 @@
 package com.johnwilkie.shop.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.math.BigDecimal;
 import java.util.Set;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 public class BikeProdVariation implements Comparable<BikeProdVariation> {
@@ -23,11 +26,10 @@ public class BikeProdVariation implements Comparable<BikeProdVariation> {
   private BigDecimal price;
   
   @ManyToOne
-  @JsonIgnore
+  @JsonBackReference
   private BikeProduct bikeprod;
   
   @OneToMany(mappedBy = "variation")
-  @JsonIgnore
   private Set<Cart> cart;
   
   public BikeProdVariation() {}
@@ -39,6 +41,14 @@ public class BikeProdVariation implements Comparable<BikeProdVariation> {
     this.price = price;
     this.bikeprod = bikeprod;
     this.cart = cart;
+  }
+  
+  @Transient
+  private BigDecimal discountedprice;
+  
+  public BigDecimal getDiscountedprice() {
+	  discountedprice = price.subtract(new BigDecimal(bikeprod.getProddiscout() / 100).multiply(price));
+	  return discountedprice;
   }
   
   public void setId(long id) {
