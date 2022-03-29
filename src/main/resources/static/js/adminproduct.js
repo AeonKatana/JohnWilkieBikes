@@ -358,18 +358,7 @@ $(document).ready(function(){
 	// Delete categories
 	
 	$(document).ready(function(){
-		$(".fa-xmark").click(function(){
-			let categid = $(this).parent().attr("id");
-			$.ajax({
-				type : "DELETE",
-				url : "/admin/deleteCategory/" + categid,
-				contentType : "application/json",
-				success : function(result){
-					alert(result);
-					$("#" + categid).fadeOut();
-				}
-			});
-		});
+		
 		
 		
 	});
@@ -441,8 +430,10 @@ function getCategoriesofone(){
 		contentType : "applicaton/json",
 		success : function(result){
 			for(let i = 0 ; i < result.length;i++){
-				$("#category").append(" <span class='lead'><span class=\"badge bg-info\"id='" + result[i].id + "'>" +  result[i].categoryname + " <i class='fa-solid text-dark m-2 fa-xmark'></i></span></span>");
+				$("#category").append(" <span class='lead'><span class=\"badge bg-info\"id='" + result[i].id + "'>" +  result[i].categoryname + " <i class='fa-solid text-dark m-2 fa-xmark '></i></span></span>");
 			}
+			
+			
 		}
 	});
 	
@@ -457,6 +448,18 @@ function getCategories(){
 			for(let i = 0 ; i < result.length;i++){
 				$("#here").append(" <span class='lead'><span class=\"badge bg-info\"id='" + result[i].id + "'>" +  result[i].categoryname + " <i class='fa-solid text-dark m-2 fa-xmark'></i></span></span>");
 			}
+			$(".fa-xmark").click(function(){
+			let categid = $(this).parent().attr("id");
+			$.ajax({
+				type : "DELETE",
+				url : "/admin/deleteCategory/" + categid,
+				contentType : "application/json",
+				success : function(result){
+					alert(result);
+					$("#" + categid).fadeOut();
+				}
+			});
+		});
 		}
 	});
 	
