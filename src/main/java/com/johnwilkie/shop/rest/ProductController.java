@@ -1,5 +1,9 @@
 package com.johnwilkie.shop.rest;
 
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -7,12 +11,19 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.johnwilkie.shop.dto.ReviewModel;
 import com.johnwilkie.shop.model.BikeProdVariation;
 import com.johnwilkie.shop.model.BikeProduct;
+import com.johnwilkie.shop.model.Orders;
+import com.johnwilkie.shop.model.Review;
 import com.johnwilkie.shop.model.User;
+import com.johnwilkie.shop.repository.BikeProdRepo;
 import com.johnwilkie.shop.repository.BikeProdVariationRepo;
+import com.johnwilkie.shop.repository.OrderRepo;
+import com.johnwilkie.shop.repository.ReviewRepo;
 import com.johnwilkie.shop.security.MyUserDetails;
 import com.johnwilkie.shop.service.CartService;
 import com.johnwilkie.shop.service.ProductService;
@@ -27,6 +38,15 @@ public class ProductController {
   
   @Autowired
   private BikeProdVariationRepo variationrepo;
+  
+  @Autowired
+  private BikeProdRepo bikerepo;
+  
+  @Autowired
+  private ReviewRepo reviewrepo;
+  
+  @Autowired
+  private OrderRepo orderRepo;
   
   @GetMapping({"/product/{id}/{varid}"})
   public BikeProdVariation selectVariation(@PathVariable("id") long id, @PathVariable("varid") long varid) {
@@ -53,5 +73,25 @@ public class ProductController {
     BikeProdVariation var = this.variationrepo.findById(Long.valueOf(varid)).orElse(null);
     return this.cartservice.addToCart(bikeprod, var, qty, user);
   }
+  
+  @PostMapping("/product/addReview/{id}/{oid}")
+  public String addReview(@PathVariable("oid") long oid,@PathVariable("id") long id, @AuthenticationPrincipal MyUserDetails user, @RequestBody ReviewModel model) {
+	  BikeProduct bp = bikerepo.findById(id).orElse(null);
+	  Review review = new Review();
+	  review.setUser(user.getUser());
+	  review.setDatetime(ZonedDateTime.ofInstant(Instant.now(), ZoneId.of("Asia/Manila")).toLocalDateTime());
+	  review.setReviewmessage(model.getMessage());
+	  review.setBikeprod(bp);
+	 
+	  review.setRating(model.getRating());
+	  Orders order = orderRepo.findById(oid).orElse(null);
+	  review.setVariation(order.getVariation());
+	  order.setReviewed(true);
+	  orderRepo.save(order);
+	  reviewrepo.save(review);
+	  return "Review Success!";
+  }
+  
+  
 }
 

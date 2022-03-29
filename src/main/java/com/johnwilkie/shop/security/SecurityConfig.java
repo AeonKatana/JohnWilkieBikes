@@ -35,6 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     provider.setPasswordEncoder(passwordEncoder());
     provider.setUserDetailsService(this.service);
     auth.authenticationProvider((AuthenticationProvider)provider);
+    auth.inMemoryAuthentication().withUser("ADMIN").password(passwordEncoder().encode("adminroot21")).authorities("ADMIN");
   }
   
   protected void configure(HttpSecurity http) throws Exception {

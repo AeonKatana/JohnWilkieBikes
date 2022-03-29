@@ -15,7 +15,12 @@ public class OrderServiceImp implements OrderService {
   @Autowired
   private OrderRepo orderrepo;
   
-  public Page<Orders> findAllByOrderTypeAndUser(String orderType, User user, int page) {
-    return this.orderrepo.findAllByOrdertypeAndUser(orderType, user, (Pageable)PageRequest.of(page, 5));
+  public Page<Orders> findAllByOrderTypeAndUser(String orderType, User user, String status, String status2, String status3 ,int page) {
+    return this.orderrepo.findAllByOrdertypeAndUserAndStatusNotAndStatusNotAndStatusNot(orderType, user, status ,status2, status3 ,(Pageable)PageRequest.of(page, 5));
   }
+
+@Override
+public Page<Orders> findAllByUserAndStatus(User user, String status , int page) {
+	return orderrepo.findAllByUserAndStatus(user, status , PageRequest.of(page, 5));
+}
 }

@@ -37,7 +37,7 @@ public class MyUserDetails implements UserDetails {
   }
   
   public boolean isAccountNonLocked() {
-    return true;
+    return this.user.isLocked();
   }
   
   public boolean isCredentialsNonExpired() {

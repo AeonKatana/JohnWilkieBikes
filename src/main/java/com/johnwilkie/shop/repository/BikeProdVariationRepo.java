@@ -14,5 +14,8 @@ public interface BikeProdVariationRepo extends JpaRepository<BikeProdVariation, 
   int getAllStocks(@Param("bikeid") long paramLong);
   
   BikeProdVariation findByBikeprodAndId(BikeProduct paramBikeProduct, long paramLong);
+  
+  long countByStocksLessThan(int number);
+  
 }
 

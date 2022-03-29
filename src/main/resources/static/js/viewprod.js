@@ -9,6 +9,14 @@ $(document).ready(function() {
 
 		}
 	});
+	
+	$(".review-rating").starRating({
+		starSize : 20,
+		readOnly : true,
+		callback : function(currentRating , $el){
+			
+		}
+	})
 
 	let stock = "";
 	let prodid = parseInt($("#thisprod").attr("pid"));
@@ -27,9 +35,9 @@ $(document).ready(function() {
 			url: "/product/" + prodid + "/" + varid,
 			contentType: "application/json",
 			success: function(result) {
-				$("#price").css("display","none");
+				
 				console.log(result.name);
-				$("#discounted").html("Price : " + '&#8369;' + parseFloat(result.discountedprice).toFixed(2));
+				$("#price").html("Price : " + '&#8369;' + parseFloat(result.discountedprice).toFixed(2));
 				$("#stock").text("Stock :" + result.stocks);
 				$("#stock").attr("stock", result.stocks);
 				stock = $("#stock").attr("stock");

@@ -1,5 +1,8 @@
 package com.johnwilkie.shop.service;
 
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.UUID;
 
 import javax.mail.internet.MimeMessage;
@@ -39,6 +42,7 @@ public class RegisterServiceImp implements RegisterService {
     if (checkusername == null) {
       user.setVerifytoken(UUID.randomUUID().toString());
       user.setRole("CUSTOMER");
+      user.setDatejoined(ZonedDateTime.ofInstant(Instant.now(), ZoneId.of("Asia/Manila")).toLocalDateTime());
       User newuser = (User)this.userrepo.save(user);
       address.setUser(newuser);
       this.addressrepo.save(address);

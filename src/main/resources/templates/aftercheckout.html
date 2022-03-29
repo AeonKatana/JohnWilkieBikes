@@ -58,7 +58,9 @@
 						<a class="nav-link" href="#" sec:authorize="isAuthenticated()">My Profile</a>
 						<a class="nav-link" th:href="@{/login-page}" sec:authorize="!isAuthenticated()">Login</a>
 					</li>
-
+					<li class="nav-item mr-5" sec:authorize="hasAuthority('ADMIN')">
+					  <a class="nav-link" th:href="@{/admin/dashboard}" ><i class="fa-solid fa-terminal"></i> Admin</a>
+					</li>
 					
 
 				</ul>

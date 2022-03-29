@@ -105,7 +105,7 @@ $(document).ready(function () {
 					url: "/mycart/delete/" + prodId + "/"  + varid,
 					contentType: "application/json",
 					success: function (result) {
-						$("#cartbox" + thiscart).fadeOut(1000, function() {
+						$("#cartbox" + varid).fadeOut(1000, function() {
 							console.log(result);
 							location.reload();
 						});

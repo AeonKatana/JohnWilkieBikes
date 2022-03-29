@@ -41,7 +41,7 @@
 			</button>
 			<div class="collapse navbar-collapse text-center" id="navbarTogglerDemo01">
 				<form th:action="@{/search}" class="form-inline my-2 my-lg-0">
-					<input type="text" name="search" id="" class="form-control mr-sm-2" style="width: 400px;"
+					<input type="text" name="search" id="" class="form-control mr-sm-2" style="width: 350px;"
 						placeholder="Search">
 					<button class="btn btn-success my-2 my-sm-0" type="submit">Search</button>
 				</form>
@@ -95,12 +95,11 @@
 		<div class=" my-2 container card" th:each="cartItem : ${cartcheck}">
 			<div class="row no-gutters text-center justify-content-center m-2">
 				<div class="col-md-3">
-					<img th:src="@{/images/bikebg.jpg}" alt="" width="100%;">
+					<img th:src="${'https://ik.imagekit.io/aeonkatana/' + cartItem.bikeprod.prodimgurl}" alt="" width="100%;">
 				</div>
 				<div class="col-md-3">
 					<h5>Item Name</h5>
-					<p class="m-2" th:text="${cartItem.bikeprod.prodname}">Sample
-						Item 1</p>
+					<p class="m-2"><a th:href="@{/product/{id}(id=${cartItem.bikeprod.id})}" th:text="${cartItem.bikeprod.prodname}"></a></p>
 				</div>
 				<div class="col-md-3">
 					<h5>Item Qty</h5>

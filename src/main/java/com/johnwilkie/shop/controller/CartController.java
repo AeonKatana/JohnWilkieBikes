@@ -14,16 +14,20 @@ import com.johnwilkie.shop.model.Cart;
 import com.johnwilkie.shop.model.User;
 import com.johnwilkie.shop.security.MyUserDetails;
 import com.johnwilkie.shop.service.CartService;
+import com.johnwilkie.shop.service.HomeService;
 
 @Controller
 public class CartController {
   @Autowired
   private CartService cartservice;
   
+  @Autowired
+  private HomeService homeservice;
+  
   @RequestMapping({"/mycart/checkout"})
   public String toCheckoutPage(@AuthenticationPrincipal MyUserDetails userdetail, Model model) {
     User user = userdetail.getUser();
-    List<Cart> cart = this.cartservice.getUserCart(user);
+    List<Cart> cart = homeservice.getUserAvailableCartItems(user);
     System.out.println(cart);
     if(cart.isEmpty()) {
     	return "redirect:/mycart";

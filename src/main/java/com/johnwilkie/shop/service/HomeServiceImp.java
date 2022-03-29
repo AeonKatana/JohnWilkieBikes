@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.johnwilkie.shop.model.BikeProduct;
@@ -31,8 +32,8 @@ public class HomeServiceImp implements HomeService {
   @Autowired
   private BikeProdVariationRepo variationrepo;
   
-  public Page<BikeProduct> getAllByCategory(String category, int page) {
-    Page<BikeProduct> prodlist = this.bikerepo.getAllByCategory(category, (Pageable)PageRequest.of(page, 3));
+  public Page<BikeProduct> getAllByCategory(String category, int page, Sort sort) {
+    Page<BikeProduct> prodlist = this.bikerepo.getAllByCategory(category, (Pageable)PageRequest.of(page, 3 , sort.descending()));
     return prodlist;
   }
   
@@ -60,8 +61,8 @@ public class HomeServiceImp implements HomeService {
     return this.variationrepo.getAllStocks(bikeid);
   }
   
-  public Page<BikeProduct> searchProduct(String search, int page) {
-    return this.bikerepo.findByProdnameContainingOrProddescContaining(search, search, (Pageable)PageRequest.of(page, 3));
+  public Page<BikeProduct> searchProduct(String search, int page , Sort sort) {
+    return this.bikerepo.findByProdnameContainingOrProddescContaining(search, search, (Pageable)PageRequest.of(page, 3, sort.descending()));
   }
 }
 
