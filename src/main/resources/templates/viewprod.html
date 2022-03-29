@@ -117,7 +117,7 @@ xmlns="http://www.w3.org/1999/xhtml"
 					<span class="lead card-text m-2 text-warning text-center" th:id="price" th:text="${'Price : ' + bikeprod.getPriceRange()}">
 						Price: 0</span>
 					<span class="card-text" th:id="discounted" th:if="${bikeprod.proddiscout != 0}"><i class="fa-solid fa-tag" th:if="${bikeprod.proddiscout != 0}"></i>-[[${#numbers.formatDecimal(bikeprod.proddiscout,0,0)}]]%</span>
-					<p class="card-text m-2 text-center" th:id="stock" th:text="${'Stocks : ' + bikeprod.getProdStocks()}"> Stock: 0</p>
+					<p class="card-text m-2 text-center" th:id="stock" th:text="${'Stocks : ' + bikeprod.prodstock}"> Stock: 0</p>
 					<div class="m-2 text-center my-rating" th:data-rating="${bikeprod.prodrating}"></div>
 
 				
