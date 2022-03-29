@@ -333,6 +333,8 @@ $(document).ready(function(){
 		form.append('name',varnames)
 		form.append('file', prodimg);
 		$("#savenewprod").text("Please wait...");
+		$("#savenewprod").prop("disabled",true);
+		$("#closeedit").prop("disabled",true);
 	$.ajax({
 			type : "POST",
 			url : "/admin/newProduct",
@@ -340,6 +342,8 @@ $(document).ready(function(){
 			contentType : false,
 			processData : false,
 			success : function(result){
+				$("#savenewprod").prop("disabled",false);
+		$("#closeedit").prop("disabled",false);
 				$("#savenewprod").text("Done");
 			    $("#addnotif").modal('show');
 			    $("#closenotif").click(function(){
@@ -362,7 +366,7 @@ $(document).ready(function(){
 				contentType : "application/json",
 				success : function(result){
 					alert(result);
-					$("#" + categid).parent().remove();
+					$("#" + categid).fadeOut();
 				}
 			});
 		});
