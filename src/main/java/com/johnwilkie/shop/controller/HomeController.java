@@ -3,6 +3,8 @@ package com.johnwilkie.shop.controller;
 import java.util.List;
 import java.util.Set;
 
+import javax.mail.BodyPart;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -20,6 +22,7 @@ import com.johnwilkie.shop.model.BikeProdVariation;
 import com.johnwilkie.shop.model.BikeProduct;
 import com.johnwilkie.shop.model.Cart;
 import com.johnwilkie.shop.model.User;
+import com.johnwilkie.shop.repository.BikeProdRepo;
 import com.johnwilkie.shop.repository.ReviewRepo;
 import com.johnwilkie.shop.security.MyUserDetails;
 import com.johnwilkie.shop.service.HomeService;
@@ -36,9 +39,16 @@ public class HomeController {
   @Autowired
   private ReviewRepo reviewRepo;
   
+  @Autowired
+  private BikeProdRepo bikerepo;
+  
   @RequestMapping({"/"})
   public String homepage(Model model) {
     model.addAttribute("categories", this.homeservice.getAllCategories());
+  model.addAttribute("featured",bikerepo.findAllByFeatured(true, PageRequest.of(0, 10, Sort.by("prodrating").ascending())));
+   model.addAttribute("onsale", bikerepo.findAllByProddiscoutGreaterThan(0F, PageRequest.of(0, 10)));
+   model.addAttribute("onsalesize", bikerepo.findAllByProddiscoutGreaterThan(0F, PageRequest.of(0, 10)).getTotalPages());
+   model.addAttribute("featuresize", bikerepo.findAllByFeatured(true, PageRequest.of(0, 10, Sort.by("prodrating"))).getSize());
     return "homepage";
   }
   
@@ -114,7 +124,6 @@ public class HomeController {
     
     return "prodlist";
   }
-  
   
 
   

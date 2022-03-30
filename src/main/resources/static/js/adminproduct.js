@@ -5,6 +5,11 @@ $(document).ready(function(){
 	//----------------------------------- DataTable Initialization-------------------------------------------
 	
 	var cptable = $("#prodtable").DataTable({
+		"createdRow": function( row, data, dataIndex ) {
+    	if ( data.featured) {
+      		$(row).addClass( 'bg-warning' );
+    		}
+  		},
 		"scrollY":        "250px",
         "scrollCollapse": true,
 		"serverSide": false,
@@ -49,9 +54,12 @@ $(document).ready(function(){
 						return total;
 					}
 			},{
-				data : null,
-				render : function(){
-					return "<input type='checkbox'>"
+				data : "featured",
+				render : function(data){
+					if(data)
+						return "<input type='checkbox' class='check' checked>" + "<span style='display:none;'>"+ data +"</span>";
+					else
+						return "<input type='checkbox' class='check'>" + "<span style='display:none;'>"+ data +"</span>";
 				}
 			},{
 				data : null,
@@ -75,6 +83,25 @@ $(document).ready(function(){
 		$(populateDropdown());
 		$("#categories").show();
 	});
+	
+	
+	$("#prodtable tbody").on('click', '.check', function(){
+		var data = cptable.row($(this).parents('tr')).data();
+		let isCheck = ($(this).is(":checked"));
+		$.ajax({
+		     type : "PUT",
+		     url : "/admin/products/featureProd/" + data.id,
+		     data : {
+				check : isCheck
+			}	,
+			success : function(result){
+				$("#prodtable").DataTable().ajax.reload();
+			}
+		})
+		
+	});
+	
+	
 	
 	$("#prodtable tbody").on('click', '.categs', function() { // Click on (+) Button to add category
 		var data = cptable.row($(this).parents('tr')).data(); 

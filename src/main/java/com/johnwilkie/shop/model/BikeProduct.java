@@ -85,7 +85,10 @@ public class BikeProduct {
   @JsonSerialize
   private String pricerange;
   
-
+  private boolean recommended;
+  
+  private boolean featured;
+  
   
   @Transient
   public String getPriceRange() {
@@ -97,19 +100,19 @@ public class BikeProduct {
   
   @Transient
   public int getProdstock() {
+	int stocks = 0;
     for (BikeProdVariation var : this.variation)
-      this.prodstock += var.getStocks(); 
-    return this.prodstock;
+      stocks += var.getStocks(); 
+    return stocks;
   }
   
   @Transient
   public double getProdrating() {
-	  
+	  double rating = 0;
 	  for(Review r : reviews) {
-		  this.prodrating += r.getRating();
+		  rating += r.getRating();
 	  }
-	  
-	  return this.prodrating / reviews.size();
+	  return rating / reviews.size();
   }
   
   

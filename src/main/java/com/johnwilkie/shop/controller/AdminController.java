@@ -181,6 +181,15 @@ public class AdminController {
 		BikeProduct p = bikeprodrepo.findById(id).orElse(null);
 		return bikerepo.findByBikeprodAndId(p, varid);
 	}
+	
+	@PutMapping("/products/featureProd/{id}")
+	@ResponseBody
+	public String featureProd(@PathVariable("id") long id, @RequestParam("check") boolean check) {
+		BikeProduct bp = bikeprodrepo.findById(id).orElse(null);
+		bp.setFeatured(check);
+		bikeprodrepo.save(bp);
+		return "Item is now featured!";
+	}
 
 	@GetMapping("/getCategories")
 	@ResponseBody

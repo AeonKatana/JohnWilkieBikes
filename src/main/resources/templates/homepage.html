@@ -11,7 +11,7 @@ xmlns="http://www.w3.org/1999/xhtml"
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
 		integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 	
-
+<link rel="stylesheet" type="text/css" th:href="@{/css/star-rating-svg.css}">
 	<style>
 		.body {
 			height: auto;
@@ -122,10 +122,25 @@ xmlns="http://www.w3.org/1999/xhtml"
 	</div>
 
 	<div class="body">
-
 		<div class="container text-center">
-			
-			<h4 class="card-title mt-5 text-center"><img th:src="@{/images/categorylogo.png}" alt=""></h4>
+		    [[${featuresize}]]
+			<h4 class="card-title mt-5 text-center"><img th:src="@{/images/featured.png}" alt=""></h4>
+			<div class="mycategories mb-5 p-2 text-center d-flex " th:classappend="${featuresize > 5 ? 'justify-content-left' : 'justify-content-center'}">
+				<div class="card mx-3 my-1" style="width: 16rem;" th:each="feature : ${featured}">			
+					
+					<img th:src="${'https://ik.imagekit.io/aeonkatana/' + feature.prodimgurl}" style="width:100%;height:150px;border:1px solid black;" alt="" class="card-img-top">
+					<div class="card-body" style="height:200px;">
+						<h5 class="card-title m-1 text-center" th:text="${feature.prodname}">Sample Product 1</h5>
+						<p class="card-text m-0" th:text="${'Price :' + feature.getPriceRange()}"></p>
+						<p class="card-text m-0" th:text="${'Stock :' + feature.prodstock}">Price : 5000</p>
+						<div class="m-0 my-rating" th:data-rating="${feature.prodrating}" th:id="${'rating' + feature.id}" th:pid=${feature.id}></div>
+						<a th:href="@{/product/{id}(id=${feature.id})}"
+							class="btn btn-success form-control my-2">View Product</a>
+					</div>
+					
+				</div>
+			</div>
+			<h4 class="card-title mt-5 text-center"><img th:src="@{/images/categorylogo.png}" alt="" width="200px;"></h4>
 			<div class="mycategories mb-5 p-2 text-center d-flex" th:if="${#lists.size(categories) >= 5}">
 				<div class="card m-1" style="width: 12rem;" th:each="category : ${categories}">
 					<img src="https://ik.imagekit.io/aeonkatana/bikebg_gA_Xrv70s.jpg?ik-sdk-version=javascript-1.4.3&updatedAt=1644313804269" alt="" class="card-img-top">
@@ -146,6 +161,21 @@ xmlns="http://www.w3.org/1999/xhtml"
 					</div>
 				</div>
 			</div>
+			<h4 class="card-title mt-5 text-center" th:if="${onsalesize > 0}"><img th:src="@{/images/onsale.png}" alt=""></h4>
+			<div class="mycategories mb-5 p-2 text-center d-flex">
+				<div class="card mx-3 my-1" style="width: 16rem;" th:each="sale : ${onsale}">			
+					<img th:src="${'https://ik.imagekit.io/aeonkatana/' + sale.prodimgurl}" style="width:100%;height:150px;border:1px solid black;" alt="" class="card-img-top">
+					<div class="card-body" style="height:200px;">
+						<h5 class="card-title m-1 text-center" th:text="${sale.prodname}">Sample Product 1</h5>
+						<p class="card-text m-0" th:text="${'Price :' + sale.getPriceRange()}"></p>
+						<p class="card-text m-0" th:text="${'Stock :' + sale.getProdstock()}">Price : 5000</p>
+						<div class="m-0 my-rating" th:data-rating="${sale.getProdrating()}" th:id="${'rating' + sale.id}" th:pid=${sale.id}></div>
+						<a th:href="@{/product/{id}(id=${sale.id})}"
+							class="btn btn-success form-control my-2">View Product</a>
+					</div>
+					
+				</div>
+			</div>
 		</div>
 
 	</div>
@@ -158,10 +188,24 @@ xmlns="http://www.w3.org/1999/xhtml"
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
 		integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
 		crossorigin="anonymous"></script>
+	<script th:src="@{/js/bootstrap.bundle.js}"></script>
+<script th:src="@{/js/jquery.star-rating-svg.js}"></script>
 		
 		<script src="https://kit.fontawesome.com/5586b4d731.js"
 		crossorigin="anonymous"></script>
-		
+<script>
+$(document).ready(function(){
+	$(".my-rating").starRating({
+	    starSize: 15,
+	    readOnly : true,
+	    callback: function(currentRating, $el){
+	    	
+	    }
+	});
+	
+})
+
+</script>		
 </body>
 
 </html>

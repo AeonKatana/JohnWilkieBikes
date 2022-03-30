@@ -77,7 +77,10 @@ class JohnWilkieOnlineApplicationTests {
 		
 		
 	}
-	
+
+	void methodTest() {
+		System.out.println(bikerepo.findAllByProddiscoutGreaterThan(0, PageRequest.of(0, 10)).getTotalElements());
+	}
 	
 	
 	

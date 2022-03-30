@@ -33,6 +33,10 @@ public interface BikeProdRepo extends JpaRepository<BikeProduct, Long> {
   Page<BikeProduct> getAllByCategoryOrderByDatetimeAsc(@Param("category") String paramString, Pageable paramPageable);
   
   Page<BikeProduct> findByProdnameContainingOrProddescContaining(String paramString1, String paramString2, Pageable paramPageable);
+
+  Page<BikeProduct> findAllByFeatured(boolean b, Pageable pageable);
+
+ Page<BikeProduct> findAllByProddiscoutGreaterThan(float discount, Pageable pageable);
   
 //  Page<BikeProduct> findAllByOrderByProdratingDesc(Pageable pageable);
 //  
