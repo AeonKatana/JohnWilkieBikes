@@ -47,8 +47,8 @@ public class HomeController {
     model.addAttribute("categories", this.homeservice.getAllCategories());
   model.addAttribute("featured",bikerepo.findAllByFeatured(true, PageRequest.of(0, 10, Sort.by("prodrating").ascending())));
    model.addAttribute("onsale", bikerepo.findAllByProddiscoutGreaterThan(0F, PageRequest.of(0, 10)));
-   model.addAttribute("onsalesize", bikerepo.findAllByProddiscoutGreaterThan(0F, PageRequest.of(0, 10)).getTotalPages());
-   model.addAttribute("featuresize", bikerepo.findAllByFeatured(true, PageRequest.of(0, 10, Sort.by("prodrating"))).getSize());
+   model.addAttribute("onsalesize", bikerepo.findAllByProddiscoutGreaterThan(0F, PageRequest.of(0, 10)).getTotalElements());
+   model.addAttribute("featuresize", bikerepo.findAllByFeatured(true, PageRequest.of(0, 10, Sort.by("prodrating"))).getTotalElements());
     return "homepage";
   }
   

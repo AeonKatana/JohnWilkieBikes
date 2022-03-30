@@ -1,5 +1,6 @@
 package com.johnwilkie.shop.model;
 
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -95,7 +96,8 @@ public class BikeProduct {
     List<BikeProdVariation> prices = new ArrayList<>(this.variation);
     BikeProdVariation low = Collections.<BikeProdVariation>min(prices);
     BikeProdVariation high = Collections.<BikeProdVariation>max(prices);
-    return "₱" + low.getPrice() + " - ₱" + high.getPrice();
+    
+    return "₱" + low.getDiscountedprice().setScale(2, RoundingMode.CEILING) +" - ₱" + high.getDiscountedprice().setScale(2, RoundingMode.CEILING);
   }
   
   @Transient
