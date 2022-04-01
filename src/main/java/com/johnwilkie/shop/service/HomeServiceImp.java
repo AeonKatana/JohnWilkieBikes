@@ -43,7 +43,7 @@ public class HomeServiceImp implements HomeService {
   }
   
   public List<Cart> getCartItems(User user) {
-    List<Cart> cart = this.cartrepo.findAllByUserid(user);
+    List<Cart> cart = this.cartrepo.findAllByUseridOrderByIdDesc(user);
     return cart;
   }
   

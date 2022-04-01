@@ -1,6 +1,7 @@
 package com.johnwilkie.shop.model;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -29,12 +30,12 @@ public class Cart {
 	private long id;
 
 	@ManyToOne
-	@JsonIgnore
+	@JsonBackReference
 	@JoinColumn(name = "bike_product_id")
 	private BikeProduct bikeprod;
 
 	@ManyToOne
-	@JsonIgnore
+	@JsonBackReference
 	@JoinColumn(name = "prod_variation")
 	private BikeProdVariation variation;
 
@@ -52,6 +53,6 @@ public class Cart {
 	public BigDecimal getQtyPrice() {
 		BikeProdVariation variation = getVariation();
 		this.qtyPrice = variation.getDiscountedprice().multiply(new BigDecimal(this.quantity));
-		return this.qtyPrice;
+		return this.qtyPrice.setScale(2, RoundingMode.CEILING);
 	}
 }

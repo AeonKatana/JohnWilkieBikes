@@ -13,8 +13,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.johnwilkie.shop.model.BikeProdVariation;
 import com.johnwilkie.shop.model.BikeProduct;
+import com.johnwilkie.shop.model.Orders;
+import com.johnwilkie.shop.model.User;
 import com.johnwilkie.shop.repository.BikeProdRepo;
 import com.johnwilkie.shop.repository.BikeProdVariationRepo;
+import com.johnwilkie.shop.repository.OrderRepo;
 import com.johnwilkie.shop.repository.UserAddressRepo;
 import com.johnwilkie.shop.repository.UserRepo;
 
@@ -41,6 +44,9 @@ class JohnWilkieOnlineApplicationTests {
 	
 	@Autowired
 	private BikeProdRepo bikerepo;
+	
+	@Autowired
+	private OrderRepo orderrepo;
 	
 	void contextLoads() {
 		
@@ -81,9 +87,33 @@ class JohnWilkieOnlineApplicationTests {
 	void methodTest() {
 		System.out.println(bikerepo.findAllByProddiscoutGreaterThan(0, PageRequest.of(0, 10)).getTotalElements());
 	}
+//	@Test
+//	void getTotalSaleofoneproduct() {
+//		
+//		for(BigDecimal decimal : orderrepo.getBikeProductTotalPrice()) {
+//			System.out.println("Product 1 :" + decimal);
+//		}
+//		
+//	}
+
 	
+	void printDescending() {
+		for(Orders order : orderrepo.findAllByStatusNotAndStatusNotOrderByDatetimeDesc("CANCELLED", "REQUEST_CANCEL")) {
+			System.out.println(order.getId() + " " + order.getBikeprod().getProdname());
+		}
+	}
 	
+	void getAllMonths() {
+		
+		for(String month : orderrepo.findAllMonths()) {
+			System.out.println("Month :" + month);
+		}
+		
+	}
 	
-	
+	@Test
+    void getUser() {
+		BikeProduct bp = bikerepo.findById(13L).orElse(null);
+	}
 
 }

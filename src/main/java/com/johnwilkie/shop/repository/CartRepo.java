@@ -18,9 +18,9 @@ public interface CartRepo extends JpaRepository<Cart, Long> {
   
   Cart findByBikeprodAndVariationAndUserid(BikeProduct paramBikeProduct, BikeProdVariation paramBikeProdVariation, User paramUser);
   
-  List<Cart> findAllByUserid(User paramUser);
+  List<Cart> findAllByUseridOrderByIdDesc(User paramUser);
   
-  @Query("SELECT DISTINCT c from Cart c join c.bikeprod bp join c.variation v join c.userid u where v.stocks != 0 AND u.id = :user")
+  @Query("SELECT DISTINCT c from Cart c join c.bikeprod bp join c.variation v join c.userid u where v.stocks != 0 AND u.id = :user order by c.id desc")
   List<Cart> getUserAvailableCartItems(@Param("user") long paramLong);
   
   void deleteByBikeprodAndUserid(BikeProduct paramBikeProduct, User paramUser);

@@ -49,5 +49,28 @@ $(document).ready(function() {
 	  	
 		
 	});
+	let orderid= 0;
+	$(".remover").click(function(){
+		orderid = $(this).attr("pid");
+	});
+	
+	$("#cancelorder").click(function(){
+		
+		$.ajax({
+			type : "PUT",
+			url : "/orders/cancelorder/" + orderid,
+			data :{
+				status : "CANCELLING"
+			},
+			success: function(result){
+				window.location.reload();
+			}
+		});
+		
+		
+		
+		
+		
+	})
     
 });

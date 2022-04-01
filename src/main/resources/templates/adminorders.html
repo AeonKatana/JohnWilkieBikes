@@ -105,13 +105,13 @@
                      class="fa-solid fa-bicycle me-2"></i>Products</a> <a th:href="@{/admin/dashboard}"
 					class="list-group-item list-group-item-action bg-transparent second-text fw-bold active"><i
                      class="fa-solid fa-bag-shopping me-2"></i>Orders</a> <a
-                     href="#"
+                     th:href="@{/admin/cancels}"
                      class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
                       class="fa-solid fa-ban me-2"></i>Cancellations</a> <a
 					th:href="@{/admin/users}"
 					class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
 					class="fas fa-user-group me-2"></i>Users</a>  <a
-					href="#"
+					th:href="@{/admin/salesreport}"
 					class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
                      class="fa-solid fa-chart-pie me-2"></i>Sales Report</a> <a th:href="@{/}"
 					class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
@@ -208,7 +208,9 @@
 							<thead>
 								<tr>
 									<th scope="row">Order Code</th>
+									<th scope="row">Image</th>
 									<th scope="row">Order ID</th>
+									<th scope="row">Placed On</th>
 									<th scope="row">Product</th>
 									<th scope="row">Variant</th>
 									<th scope="row">Price</th>

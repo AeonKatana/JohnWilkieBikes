@@ -45,7 +45,7 @@ public class HomeController {
   @RequestMapping({"/"})
   public String homepage(Model model) {
     model.addAttribute("categories", this.homeservice.getAllCategories());
-  model.addAttribute("featured",bikerepo.findAllByFeatured(true, PageRequest.of(0, 10, Sort.by("prodrating").ascending())));
+  model.addAttribute("featured",bikerepo.findAllByFeatured(true, PageRequest.of(0, 10, Sort.by("prodrating").descending())));
    model.addAttribute("onsale", bikerepo.findAllByProddiscoutGreaterThan(0F, PageRequest.of(0, 10)));
    model.addAttribute("onsalesize", bikerepo.findAllByProddiscoutGreaterThan(0F, PageRequest.of(0, 10)).getTotalElements());
    model.addAttribute("featuresize", bikerepo.findAllByFeatured(true, PageRequest.of(0, 10, Sort.by("prodrating"))).getTotalElements());
@@ -173,7 +173,7 @@ public class HomeController {
       model.addAttribute("mycart", null);
     } else {
       User user = userdetail.getUser();
-      List<Cart> mycart = this.homeservice.getUserAvailableCartItems(user);
+      List<Cart> mycart = this.homeservice.getCartItems(user);
       if (mycart.size() < 1) {
         model.addAttribute("mycart", Integer.valueOf(0));
       } else {

@@ -39,22 +39,28 @@
 				
 					<div class="modal-content">
 						<div class="modal-header">
-							<h5 class="modal-title" id="staticBackdropLabel">User Information</h5>
+							<h5 class="modal-title" id="staticBackdropLabel">Order Information</h5>
 							<button type="button" class="btn-close" data-bs-dismiss="modal"
 								aria-label="Close"></button>
 						</div>
 						
 						<div class="modal-body justify-content-left m-2">
-						<div class="form-check form-switch">
-  <input class="form-check-input" type="checkbox" id="lockswitch">
-  <label class="form-check-label" for="flexSwitchCheckChecked">Lock/Unlock User</label>
-</div>
 						
+							<div class="row">
+								
+								<h5 class="text">Payment Method : <span id="paymethod"></span></h5>
+								<p class="text-primary" id="ordercode"></p>
+							</div>
 							<h5 class="m-2">
 								<label for="name" class="form-label">Full Name</label>
 							</h5>
 							<input type="text" id="name" name="name" class="form-control my-2"
 								placeholder="Full Name" disabled>
+							<h5 class="m-2">
+								<label for="name" class="form-label">Product Name</label>
+							</h5>
+							<input type="text" id="prodname" name="name" class="form-control my-2"
+								placeholder="Product Name" disabled>
 							<h5 class="m-2">
 								<label for="email" class="form-label">Email Address</label>
 							</h5>
@@ -71,10 +77,7 @@
 							</h5>
 							<textarea id="address" class="form-control my-2"
 								placeholder="Complete Address" name="address" disabled></textarea>
-							<div class="row">
-								<span class="col-md-6 text-primary my-2"># of Times Ordered : <span id="ordervalue"></span></span>
-								<span class="col-md-6 text-danger my-2"># of Times Cancelled : <span id="cancelvalue"></span></span>
-							</div>
+							
 													</div>
 						<div class="modal-footer justify-content-center">
 							
@@ -99,14 +102,14 @@
 					class="fas fa-tachometer-alt me-2"></i>Dashboard</a> <a
 					th:href="@{/admin/products}"
 					class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
-                     class="fa-solid fa-bicycle me-2"></i>Products</a> <a th:href="@{/admin/orders}"
-					class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
+                     class="fa-solid fa-bicycle me-2"></i>Products</a> <a th:href="@{/admin/dashboard}"
+					class="list-group-item list-group-item-action bg-transparent second-text fw-bold "><i
                      class="fa-solid fa-bag-shopping me-2"></i>Orders</a> <a
                      th:href="@{/admin/cancels}"
-                     class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
+                     class="list-group-item list-group-item-action bg-transparent second-text fw-bold active"><i
                       class="fa-solid fa-ban me-2"></i>Cancellations</a> <a
-					th:href="@{/users}"
-					class="list-group-item list-group-item-action bg-transparent second-text fw-bold active"><i
+					th:href="@{/admin/users}"
+					class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
 					class="fas fa-user-group me-2"></i>Users</a>  <a
 					th:href="@{/admin/salesreport}"
 					class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
@@ -130,7 +133,7 @@
 					<i class="fas fa-align-left primary-text fs-4 me-3"
 						id="menu-toggle"></i>
 					<h2 class="fs-2 m-0">
-						 User Management 
+						Order Management
 					</h2>
 				</div>
 
@@ -161,43 +164,34 @@
 			<div class="container-fluid px-4">
 				<div class="row g-3 my-2">
 					
-					<div class="col-md-3">
+					<div class="col-md-4">
 						<div
 							class="p-3 bg-info shadow-lg d-flex justify-content-around align-items-center rounded">
 							<div>
-								<h3 class="fs-2 text-white" th:text="${usercount}"></h3>
-								<p class="fs-6 fw-bold text-white">Total Users</p>
+								<h3 class="fs-2 text-white" th:text="${totalorders}"></h3>
+								<p class="fs-6 fw-bold text-white">Total Orders</p>
 							</div>
 							<i class="fas fa-building fs-1 p-3 text-white"></i>
 						</div>
 					</div>
 
-					<div class="col-md-3">
+					<div class="col-md-4">
 						<div
 							class="p-3 bg-success shadow-sm d-flex justify-content-around align-items-center rounded">
 							<div>
-								<h3 class="fs-2 text-white" th:text="${activecount}">0</h3>
-								<p class="fs-6 fw-bold text-white">Active Users</p>
+								<h3 class="fs-2 text-white" th:text="${monthlyorders}"></h3>
+								<p class="fs-6 fw-bold text-white">Monthly Orders</p>
 							</div>
 							<i class="fas fa-user-group fs-1  p-3 text-white"></i>
 						</div>
 					</div>
-					<div class="col-md-3">
+
+					<div class="col-md-4">
 						<div
 							class="p-3 bg-danger shadow-sm d-flex justify-content-around align-items-center rounded">
 							<div>
-								<h3 class="fs-2 text-white" th:text="${lockedcount}">0</h3>
-								<p class="fs-6 fw-bold text-white">Locked Users</p>
-							</div>
-							<i class="fas fa-triangle-exclamation fs-1 p-3 text-white"></i>
-						</div>
-					</div>
-					<div class="col-md-3">
-						<div
-							class="p-3 bg-danger shadow-sm d-flex justify-content-around align-items-center rounded">
-							<div>
-								<h3 class="fs-2 text-white" th:text="${disablecount}">0</h3>
-								<p class="fs-6 fw-bold text-white">Inactive Users</p>
+								<h3 class="fs-2 text-white" th:text="${yearlyorders}">0</h3>
+								<p class="fs-6 fw-bold text-white">Yearly Orders</p>
 							</div>
 							<i class="fas fa-triangle-exclamation fs-1 p-3 text-white"></i>
 						</div>
@@ -208,16 +202,20 @@
                 <div class="row my-2 border">
 
 
-						<table id="usertable"
+						<table id="ordertable"
 							class="table bg-white rounded shadow-sm  table-hover">
 
 							<thead>
 								<tr>
-									<th scope="row">ID</th>
-									<th scope="row">First Name</th>
-									<th scope="row">Last Name</th>
-									<th scope="row">Role</th>
-									<th scope="row">Date Registered</th>
+									<th scope="row">Order Code</th>
+									<th scope="row">Image</th>
+									<th scope="row">Order ID</th>
+									<th scope="row">Placed On</th>
+									<th scope="row">Product</th>
+									<th scope="row">Variant</th>
+									<th scope="row">Price</th>
+									<th scope="row">User</th>
+									<th scope="row">Order Type</th>
 									<th scope="row">Actions</th>
 								</tr>
 							</thead>
@@ -250,6 +248,6 @@
 			el.classList.toggle("toggled");
 		};
 	</script>
-<script th:src="@{/js/adminusers.js}"></script>
+<script th:src="@{/js/adminorders.js}"></script>
 </body>
 </html>

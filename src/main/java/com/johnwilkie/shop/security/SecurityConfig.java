@@ -43,7 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
       .authorizeRequests()
       .antMatchers(new String[] { "/resources/**" }).permitAll()
       .antMatchers(new String[] { "/", "/product/**", "/category/**", "/addtocart/***,/register-page", "/register" }).permitAll()
-      .antMatchers(new String[] { "/orders/**", "/mycart/checkout/**", "/mycart/totalQty" }).authenticated()
+      .antMatchers(new String[] { "/orders/**", "/mycart/checkout/**", "/mycart/totalQty", "/paypal/**" }).authenticated()
       .antMatchers("/admin/**").hasAuthority("ADMIN")
       .and()
       .formLogin().loginPage("/login-page").usernameParameter("username").passwordParameter("pass")

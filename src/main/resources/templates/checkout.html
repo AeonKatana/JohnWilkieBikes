@@ -157,8 +157,14 @@
 							class="form-control" th:field="${user.address.city}" readonly>
 					</div>
 				</div>
-				<form th:action="@{/mycart/checkout/confirm}" method="POST">
+				
 					<p class="m-2">Payment Method:</p>
+				<form th:action="@{/paypal/pay}" class="text-center" method="POST">
+						<input type="hidden" name="orderType" value="paypal">
+					   <button type="submit" class="btn btn-primary m-2 text-center">
+							<i class="fa-brands fa-paypal"></i> Pay with PayPal</button>
+				</form>
+				<form th:action="@{/mycart/checkout/confirm}" method="POST">
 					<div class="text-center">
 						<input type="radio" class="btn-check" name="orderType"
 							id="success-outlined" autocomplete="off" value="cod"> <label
@@ -172,8 +178,6 @@
 					<div class="text-center m-2">
 						<input type="submit" class="btn btn-success" value="Confirm Order"/>
 					</div>
-					
-					
 				</form>
 				
 

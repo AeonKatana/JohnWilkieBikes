@@ -11,6 +11,8 @@ $(document).ready(function(){
       		$(row).addClass( 'text-info' );
     		}
   		},
+  		"aaSorting": [],
+  		 "order": [],
 		"scrollY":        "250px",
         "scrollCollapse": true,
 		"serverSide": false,
@@ -23,10 +25,10 @@ $(document).ready(function(){
               "visible": false	
 		}],
 		'ajax': {
-			url: '/admin/orders/list', type: 'GET', dataSrc: ""
+			url: '/admin/orders/quicklist', type: 'GET', dataSrc: ""
 		},
 		"pageLength": 10,
-		"lengthChange": true,
+		"lengthChange": false,
 		columns: [{
 			data : "ordercode"
 				},{

@@ -86,6 +86,31 @@ public class AdminController {
 		model.addAttribute("totalorders", orderrepo.count());
 		return "adminhome";
 	}
+	
+	@GetMapping("/salesreport")
+	public String salesReport(@RequestParam(required = false) String selected,Model model) {
+		
+		Map<String, BigDecimal> graphData = new TreeMap<>();
+		
+		if(selected == null || selected.isBlank()) {
+			selected = ZonedDateTime.ofInstant(Instant.now(), ZoneId.of("Asia/Manila")).getMonth().name();
+		}
+		
+		for(Orders order : orderrepo.findAll()) {
+			if(selected == null || selected.isBlank()) {
+				graphData.put(order.getBikeprod().getProdname(), orderrepo.getBikeProductTotalPrice(order.getBikeprod().getId(),selected));
+			}
+			else
+				graphData.put(order.getBikeprod().getProdname(), orderrepo.getBikeProductTotalPrice(order.getBikeprod().getId(),selected));
+		}
+		model.addAttribute("chartData", graphData);
+		model.addAttribute("selectedmonth", selected);
+		model.addAttribute("months", orderrepo.findAllMonths());
+		model.addAttribute("totalsales", orderrepo.getTotalSales());
+		model.addAttribute("monthly", orderrepo.getMonthlySales(ZonedDateTime.ofInstant(Instant.now(), ZoneId.of("Asia/Manila")).getMonth().name()));
+		model.addAttribute("yearly", orderrepo.getYearlySales(ZonedDateTime.ofInstant(Instant.now(), ZoneId.of("Asia/Manila")).getYear()));
+		return "adminsales";
+	}
 
 	@GetMapping("/products")
 	public String products(Model model) {
@@ -118,6 +143,14 @@ public class AdminController {
 		return "adminorders";
 	}
 	
+	@GetMapping("/cancels")
+	public String cancels(Model model) {
+		
+		model.addAttribute("totalcancel", orderrepo.countByStatusOrStatus("CANCELLED", ""));
+		model.addAttribute("cancelrequests", orderrepo.countByStatusOrStatus("CANCELLING", ""));
+		
+		return "admicancel";
+	}
 	// ---------------------------REST API Section---------------------------------------------
 
 	@GetMapping("/products/prodlist") // DataTable Source
@@ -151,8 +184,15 @@ public class AdminController {
 	@GetMapping("/orders/list")
 	@ResponseBody
 	public List<Orders> getAllOrders(){
-		return orderrepo.findAllByStatusNotAndStatusNotOrderByDatetimeDesc("CANCELLED", "REQUEST_CANCEL");
+		return orderrepo.findAllByStatusNotAndStatusNotOrderByDatetimeDesc("CANCELLED", "CANCELLING");
 	}
+	
+	@GetMapping("/orders/quicklist")
+	@ResponseBody
+	public List<Orders> getQuickOrders(){
+		return orderrepo.findTop5ByStatusNotAndStatusNotOrderByDatetimeDesc("CANCELLED", "CANCELLING");
+	}
+	
 	
 	@GetMapping("/orders/getOrder/{id}")
 	@ResponseBody

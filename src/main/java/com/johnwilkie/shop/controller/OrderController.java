@@ -6,9 +6,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.johnwilkie.shop.model.Orders;
 import com.johnwilkie.shop.model.User;
+import com.johnwilkie.shop.repository.OrderRepo;
 import com.johnwilkie.shop.repository.ReviewRepo;
 import com.johnwilkie.shop.security.MyUserDetails;
 import com.johnwilkie.shop.service.HomeService;
@@ -21,6 +26,9 @@ public class OrderController {
   private OrderService orderservice;
   
   @Autowired
+  private OrderRepo orderRepo;
+  
+  @Autowired
   private HomeService homeservice;
   
   @Autowired
@@ -31,10 +39,10 @@ public class OrderController {
     User user = userdetail.getUser();
     model.addAttribute("currentPage", Integer.valueOf(page));
     model.addAttribute("what", "No orders for delivery");
-    model.addAttribute("orders", this.orderservice.findAllByOrderTypeAndUser("cod", user,"CANCELLED", "DELIVERED", "PICKED UP" , page - 1));
-    model.addAttribute("totalpage", Integer.valueOf(this.orderservice.findAllByOrderTypeAndUser("cod", user,"CANCELLED", "DELIVERED", "PICKED UP" , page - 1).getTotalPages()));
+    model.addAttribute("orders", this.orderservice.findAllByOrderTypeAndUser("cod","paypap", user,"CANCELLED", "DELIVERED", "PICKED UP" , page - 1));
+    model.addAttribute("totalpage", Integer.valueOf(this.orderservice.findAllByOrderTypeAndUser("cod","paypal" ,user,"CANCELLED", "DELIVERED", "PICKED UP" , page - 1).getTotalPages()));
     model.addAttribute("url", "/orders/mydelivery/page/");
-    System.out.println(this.orderservice.findAllByOrderTypeAndUser("cod", user,"CANCELLED", "DELIVERED", "PICKED UP" , page - 1).getTotalPages());
+    System.out.println(this.orderservice.findAllByOrderTypeAndUser("cod","paypal" ,user,"CANCELLED", "DELIVERED", "PICKED UP" , page - 1).getTotalPages());
     return "orders";
   }
   
@@ -43,10 +51,10 @@ public class OrderController {
     User user = userdetail.getUser();
     model.addAttribute("currentPage", Integer.valueOf(page));
     model.addAttribute("what", "No orders for pickup");
-    model.addAttribute("orders", this.orderservice.findAllByOrderTypeAndUser("cop", user,"CANCELLED", "DELIVERED", "PICKED UP" , page - 1));
-    model.addAttribute("totalpage", Integer.valueOf(this.orderservice.findAllByOrderTypeAndUser("cop", user,"CANCELLED", "DELIVERED", "PICKED UP" , page - 1).getTotalPages()));
+    model.addAttribute("orders", this.orderservice.findAllByOrderTypeAndUser("cop","", user,"CANCELLED", "DELIVERED", "PICKED UP" , page - 1));
+    model.addAttribute("totalpage", Integer.valueOf(this.orderservice.findAllByOrderTypeAndUser("cop", "",user,"CANCELLED", "DELIVERED", "PICKED UP" , page - 1).getTotalPages()));
     model.addAttribute("url", "/orders/mypickup/page/");
-    System.out.println(this.orderservice.findAllByOrderTypeAndUser("cop", user,"CANCELLED", "DELIVERED", "PICKED UP" , page - 1).getTotalPages());
+    System.out.println(this.orderservice.findAllByOrderTypeAndUser("cop", "",user,"CANCELLED", "DELIVERED", "PICKED UP" , page - 1).getTotalPages());
     return "orders";
   }
   
@@ -56,11 +64,11 @@ public class OrderController {
     model.addAttribute("categories", this.homeservice.getAllCategories());
     model.addAttribute("currentPage", Integer.valueOf(1));
     model.addAttribute("what", "No orders for delivery");
-    model.addAttribute("orders", this.orderservice.findAllByOrderTypeAndUser("cod", user,"CANCELLED", "DELIVERED", "PICKED UP" ,0));
-    model.addAttribute("totalpage", Integer.valueOf(this.orderservice.findAllByOrderTypeAndUser("cod", user,"CANCELLED", "DELIVERED", "PICKED UP" , 0).getTotalPages()));
-    System.out.println("Status : " + this.orderservice.findAllByOrderTypeAndUser("cod", user,"CANCELLED", "DELIVERED", "PICKED UP" , 0).getTotalPages());
+    model.addAttribute("orders", this.orderservice.findAllByOrderTypeAndUser("cod", "paypal",user,"CANCELLED", "DELIVERED", "PICKED UP" ,0));
+    model.addAttribute("totalpage", Integer.valueOf(this.orderservice.findAllByOrderTypeAndUser("cod", "paypal",user,"CANCELLED", "DELIVERED", "PICKED UP" , 0).getTotalPages()));
+    System.out.println("Status : " + this.orderservice.findAllByOrderTypeAndUser("cod", "paypal",user,"CANCELLED", "DELIVERED", "PICKED UP" , 0).getTotalPages());
     model.addAttribute("url", "/orders/mydelivery/page/");
-    System.out.println(this.orderservice.findAllByOrderTypeAndUser("cod", user,"CANCELLED", "DELIVERED", "PICKED UP" , 0).getTotalPages());
+    System.out.println(this.orderservice.findAllByOrderTypeAndUser("cod","paypal", user,"CANCELLED", "DELIVERED", "PICKED UP" , 0).getTotalPages());
     return "orders";
   }
   
@@ -72,11 +80,11 @@ public class OrderController {
     System.out.println(user.getFname());
     model.addAttribute("currentPage", Integer.valueOf(1));
     model.addAttribute("what", "No orders for pickup");
-    model.addAttribute("orders", this.orderservice.findAllByOrderTypeAndUser("cop", user,"CANCELLED", "DELIVERED", "PICKED UP" , 0));
-    model.addAttribute("totalpage", Integer.valueOf(this.orderservice.findAllByOrderTypeAndUser("cop", user,"CANCELLED", "DELIVERED", "PICKED UP" , 0).getTotalPages()));
-    System.out.println(" Status : " + this.orderservice.findAllByOrderTypeAndUser("cop", user,"CANCELLED", "DELIVERED", "PICKED UP" , 0).getTotalPages());
+    model.addAttribute("orders", this.orderservice.findAllByOrderTypeAndUser("cop","" ,user,"CANCELLED", "DELIVERED", "PICKED UP" , 0));
+    model.addAttribute("totalpage", Integer.valueOf(this.orderservice.findAllByOrderTypeAndUser("cop", "",user,"CANCELLED", "DELIVERED", "PICKED UP" , 0).getTotalPages()));
+    System.out.println(" Status : " + this.orderservice.findAllByOrderTypeAndUser("cop", "" ,user,"CANCELLED", "DELIVERED", "PICKED UP" , 0).getTotalPages());
     model.addAttribute("url", "/orders/mypickup/page/");
-    System.out.println(this.orderservice.findAllByOrderTypeAndUser("cop", user,"CANCELLED", "DELIVERED", "PICKED UP" , 0).getTotalPages());
+    System.out.println(this.orderservice.findAllByOrderTypeAndUser("cop", "", user,"CANCELLED", "DELIVERED", "PICKED UP" , 0).getTotalPages());
     return "orders";
   }
   
@@ -88,11 +96,11 @@ public class OrderController {
     System.out.println(user.getFname());
     model.addAttribute("currentPage", Integer.valueOf(1));
     model.addAttribute("what", "No completed orders yet");
-    model.addAttribute("orders", this.orderservice.findAllByUserAndStatus( user, "DELIVERED" , 0));
-    model.addAttribute("totalpage", Integer.valueOf(this.orderservice.findAllByUserAndStatus( user, "DELIVERED" ,0).getTotalPages()));
-    System.out.println(" Status : " + this.orderservice.findAllByUserAndStatus( user, "DELIVERED" ,0).getTotalPages());
+    model.addAttribute("orders", this.orderservice.findAllByUserAndStatus( user, "DELIVERED" ,"", 0));
+    model.addAttribute("totalpage", Integer.valueOf(this.orderservice.findAllByUserAndStatus( user, "DELIVERED" ,"",0).getTotalPages()));
+    System.out.println(" Status : " + this.orderservice.findAllByUserAndStatus( user, "DELIVERED","" ,0).getTotalPages());
     model.addAttribute("url", "/orders/mycompleted/page/");
-    System.out.println(this.orderservice.findAllByUserAndStatus( user, "DELIVERED" ,0).getTotalPages());
+    System.out.println(this.orderservice.findAllByUserAndStatus( user, "DELIVERED","" ,0).getTotalPages());
    
     
     
@@ -104,10 +112,10 @@ public class OrderController {
     User user = userdetail.getUser();
     model.addAttribute("currentPage", Integer.valueOf(page));
     model.addAttribute("what", "No completed orders yet");
-    model.addAttribute("orders", this.orderservice.findAllByUserAndStatus( user, "DELIVERED" ,page - 1));
-    model.addAttribute("totalpage", Integer.valueOf(this.orderservice.findAllByUserAndStatus( user, "DELIVERED" ,page - 1).getTotalPages()));
+    model.addAttribute("orders", this.orderservice.findAllByUserAndStatus( user, "DELIVERED" ,"",page - 1));
+    model.addAttribute("totalpage", Integer.valueOf(this.orderservice.findAllByUserAndStatus( user, "DELIVERED","" ,page - 1).getTotalPages()));
     model.addAttribute("url", "/orders/mycompleted/page/");
-    System.out.println(this.orderservice.findAllByUserAndStatus( user, "DELIVERED" ,page - 1).getTotalPages());
+    System.out.println(this.orderservice.findAllByUserAndStatus( user, "DELIVERED","" ,page - 1).getTotalPages());
     return "orders";
   }
   
@@ -117,11 +125,11 @@ public class OrderController {
 	    System.out.println(user.getFname());
 	    model.addAttribute("currentPage", Integer.valueOf(1));
 	    model.addAttribute("what", "No Cancelled Orders");
-	    model.addAttribute("orders", this.orderservice.findAllByUserAndStatus(user, "CANCELLED", 0));
-	    model.addAttribute("totalpage", Integer.valueOf(this.orderservice.findAllByUserAndStatus(user,"CANCELLED", 0).getTotalPages()));
-	    System.out.println(" Status : " + this.orderservice.findAllByUserAndStatus(user, "CANCELLED" ,0).getTotalPages());
+	    model.addAttribute("orders", this.orderservice.findAllByUserAndStatus(user, "CANCELLED", "CANCELLING" ,0));
+	    model.addAttribute("totalpage", Integer.valueOf(this.orderservice.findAllByUserAndStatus(user,"CANCELLED","CANCELLING", 0).getTotalPages()));
+	    System.out.println(" Status : " + this.orderservice.findAllByUserAndStatus(user, "CANCELLED","CANCELLING" ,0).getTotalPages());
 	    model.addAttribute("url", "/orders/cancelled/page/");
-	    System.out.println(this.orderservice.findAllByUserAndStatus(user, "CANCELLED" ,0).getTotalPages());
+	    System.out.println(this.orderservice.findAllByUserAndStatus(user, "CANCELLED" ,"CANCELLING" ,0).getTotalPages());
     return "orders";
   }
   @GetMapping({"/cancelled/page/{page}"})
@@ -130,11 +138,26 @@ public class OrderController {
 	    System.out.println(user.getFname());
 	    model.addAttribute("currentPage", Integer.valueOf(1));
 	    model.addAttribute("what", "No Cancelled Orders");
-	    model.addAttribute("orders", this.orderservice.findAllByUserAndStatus(user, "CANCELLED", page - 1));
-	    model.addAttribute("totalpage", Integer.valueOf(this.orderservice.findAllByUserAndStatus(user,"CANCELLED", page - 1).getTotalPages()));
-	    System.out.println(" Status : " + this.orderservice.findAllByUserAndStatus(user, "CANCELLED" ,page - 1).getTotalPages());
+	    model.addAttribute("orders", this.orderservice.findAllByUserAndStatus(user, "CANCELLED", "CANCELLING",page - 1));
+	    model.addAttribute("totalpage", Integer.valueOf(this.orderservice.findAllByUserAndStatus(user,"CANCELLED","CANCELLING", page - 1).getTotalPages()));
+	    System.out.println(" Status : " + this.orderservice.findAllByUserAndStatus(user, "CANCELLED","CANCELLING" ,page - 1).getTotalPages());
 	    model.addAttribute("url", "/orders/cancelled/page/");
-	    System.out.println(this.orderservice.findAllByUserAndStatus(user, "CANCELLED" ,page - 1).getTotalPages());
+	    System.out.println(this.orderservice.findAllByUserAndStatus(user, "CANCELLED", "CANCELLING" ,page - 1).getTotalPages());
     return "orders";
   }
+  
+  
+  
+  @PutMapping("/cancelorder/{id}")
+  @ResponseBody
+  public String cancelOrder(@RequestParam("status") String status,@PathVariable("id") long id) {
+	  
+	    Orders order = orderRepo.findById(id).orElse(null);
+		order.setStatus(status);
+		orderRepo.save(order);
+		return "Success";
+	  
+  }
+  
+  
 }

@@ -21,6 +21,15 @@ xmlns="http://www.w3.org/1999/xhtml"
 		crossorigin="anonymous"></script>
  <script src="https://kit.fontawesome.com/5586b4d731.js" crossorigin="anonymous"></script>
 
+<style>
+
+.condition-true{
+	opacity : 0.3;
+	pointer-events:none;
+}
+
+</style>
+
 </head>
 
 <body>
@@ -76,7 +85,7 @@ xmlns="http://www.w3.org/1999/xhtml"
 		<h3 class="card-title"> My Cart</h3>
 		<div class="container m-2 p-3" th:if="${mycart != null && mycart != 0}">
 
-			<div class="card m-2 container thiscart" th:each="cartItems : ${mycart}">
+			<div class="card m-2 container thiscart" th:each="cartItems : ${mycart}" th:classappend="${cartItems.variation.stocks == 0 ? 'condition-true' : ''}">
 			
 				<div class="row no-gutters" th:id="'cartbox' + ${cartItems.variation.id}" th:pid="${cartItems.variation.id}">
 									<button class="btn btn-danger remover" th:pid="${cartItems.bikeprod.id}" th:vid="${cartItems.variation.id}" style="z-index: 1;position:absolute;right:0;">Remove</button>
@@ -104,7 +113,7 @@ xmlns="http://www.w3.org/1999/xhtml"
 								<button type="button" class="btn text-center addbtn"
 									th:id="'itemid' + ${cartItems.variation.id}" th:pid="${cartItems.bikeprod.id}"
 									th:stock="${cartItems.variation.stocks}"
-									th:vid="${cartItems.variation.id}">+</button>
+									th:vid="${cartItems.variation.id}">+</button>	
 							</form>
 							
 						</div>

@@ -18,9 +18,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.Formula;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
@@ -45,7 +45,13 @@ public class BikeProduct {
   private String proddesc;
   
   @Column(name="prod_rating")
-  private double prodrating;
+  @Formula("(SELECT coalesce(avg(r.rating)) from bikeproduct bp "
+  		+ "join review r on r.bikeprod_id = bp.id where bp.id = id)")
+  private Double prodrating;
+  
+  public Double getProdrating() {
+	  return prodrating;
+  }
   
   @Column(name = "prod_image")
   private String prodimgurl;
@@ -58,19 +64,17 @@ public class BikeProduct {
   private int timesordered;
   
   @OneToMany(mappedBy = "bikeprod")
-  @Fetch(FetchMode.JOIN)
   private Set<BikeCategory> category;
   
   @OneToMany(mappedBy = "bikeprod", cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
-  @Fetch(FetchMode.JOIN)
   @JsonManagedReference
   private Set<Orders> orders;
   
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "bikeprod", cascade = {CascadeType.ALL})
+  @JsonManagedReference
   private Set<Cart> prodcart;
   
   @OneToMany(mappedBy = "bikeprod")
-  @Fetch(FetchMode.JOIN)
   @JsonManagedReference
   private Set<BikeProdVariation> variation;
   
@@ -89,6 +93,10 @@ public class BikeProduct {
   private boolean recommended;
   
   private boolean featured;
+  
+  @Transient
+  @JsonIgnore
+  private double currentrating;
   
   
   @Transient
@@ -109,12 +117,13 @@ public class BikeProduct {
   }
   
   @Transient
-  public double getProdrating() {
+  public double getProdRating() {
 	  double rating = 0;
 	  for(Review r : reviews) {
 		  rating += r.getRating();
 	  }
-	  return rating / reviews.size();
+	  currentrating = rating / reviews.size();
+	  return currentrating;
   }
   
   
