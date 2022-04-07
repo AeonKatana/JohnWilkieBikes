@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en"
+xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Home Page</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+		integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	
+<link rel="stylesheet" type="text/css" th:href="@{/css/star-rating-svg.css}">
+	<style>
+	
+	
+	
+		.body {
+			height: 1000px;
+		    /*background-image: url("https://dm0qx8t0i9gc9.cloudfront.net/watermarks/image/rDtN98Qoishumwih/gray-yellow-background_GJRKr_Hd_SB_PM.jpg");*/
+			background-position: center;
+			background-blend-mode: darken;
+			background-attachment: fixed;
+			background-size: 100%;
+			background-repeat: no-repeat;
+
+		}
+		.condition-true{
+			opacity : 0.5;
+		}
+
+		.mycategories {
+			
+			max-width: 90%;
+			overflow-x:auto;
+			margin: 10px auto;
+			border: 1px solid white;
+			
+		}
+		.mycategories:hover{
+			overflow-x:auto;
+		}
+
+		.mycategories .card {
+			flex: 0 0 auto;
+			text-align:center
+		}
+		
+		.dropdown-item:hover{
+			background-color:lime;
+			
+		}
+		
+		
+		
+		/* width */
+::-webkit-scrollbar {
+  width: 10px;
+ 
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+
+@media only screen and (max-width: 600px) {
+  
+  	.featured .card{
+  		
+  		width:30px;
+  	
+  	}
+  
+}
+
+
+	</style>
+
+</head>
+
+<body>
+	<div class="m-0">
+
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark " style="position: sticky;">
+			<a class="navbar-brand" th:href="@{/}"><img src="https://ik.imagekit.io/aeonkatana/logo2_HGKTtB_eC.png?ik-sdk-version=javascript-1.4.3&updatedAt=1644313806003" alt="" width="100px"></a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01"
+				aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse text-center" id="navbarTogglerDemo01">
+				<form th:action="@{/search}" class="form-inline my-2 my-lg-0">
+					<input type="text" name="search" id="" class="form-control mr-sm-2" style="width: 350px;"
+						placeholder="Search">
+					<button class="btn btn-success my-2 my-sm-0" type="submit">Search</button>
+				</form>
+
+				<ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+					<li class="nav-item dropdown mr-5">
+						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+							data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							Categories
+						</a>
+						<div class="dropdown-menu bg-light my-2" aria-labelledby="navbarDropdownMenuLink" >
+						<th:block th:each="categ : ${categories}">
+							<a class="dropdown-item" th:href="@{/category/{categs}(categs=${categ.categoryname})}" th:text="${categ.categoryname}">Category 1</a>
+						</th:block>
+						</div>
+					</li>
+					<li class="nav-item mr-5">
+						<a class="nav-link" th:href="@{/mycart}"> <i class="fa-solid fa-cart-shopping text-light mx-1"></i> Cart <span class="sr-only">(current)</span></a>
+					</li>
+					<li class="nav-item mr-5">
+						<a class="nav-link" th:href="@{/orders/mydelivery}" tabindex="-1" aria-disabled="true"> <i class="fa-solid fa-bag-shopping text-light mx-1"></i>Purchases</a>
+					</li>
+					<li class="nav-item dropdown mr-5" sec:authorize="isAuthenticated()">
+					
+						<a class="nav-link dropdown-toggle" href="#" id="navbarDroddownMenuLink" role="button"
+						  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						  <i class="fa-solid text-light fa-user"> </i>
+						 My Profile
+						 </a>
+						 <div class="dropdown-menu bg-light my-4" aria-labelledby="navbarDropdownMenuLink">
+						 	<a class="dropdown-item" th:href="@{/user/userprofile}">View My Profile</a>
+						 	<a class="dropdown-item" th:href="@{/orders/mydelivery}">My Deliveries</a>
+						 	<a class="dropdown-item" th:href="@{/orders/mypickup}">My Pick-ups</a>
+						 	<a class="dropdown-item" th:href="@{/orders/mycompleted}">My Completed</a>
+						 	<a class="dropdown-item" th:href="@{/orders/cancelled}">My Cancels</a>
+						 	<a class="dropdown-item" th:href="@{/perform-logout}">Logout</a>
+						 </div>
+						
+					</li>
+					<li class="nav-item mr-5"  sec:authorize="!isAuthenticated()">
+						<a class="nav-link" th:href="@{/login-page}">Login</a>
+					</li>
+					<li class="nav-item mr-5" sec:authorize="hasAuthority('ADMIN')">
+					  <a class="nav-link" th:href="@{/admin/dashboard}" ><i class="fa-solid fa-terminal"></i> Admin</a>
+					</li>
+					
+
+				</ul>
+
+			</div>
+
+		</nav>
+	</div>
+
+	<div class="body">
+		<div class="container text-center ">
+			<img th:src="@{/images/blank-profile-picture-png.png}" class="mt-5 p-3" width="350px;" style="border-radius: 50%;background-color:white;">
+			<div class="mycard  p-2 my-2"
+		style="margin-left: auto; margin-right: auto; max-width: 100rem;">
+		
+		<div th:if="${error}"class="alert alert-warning alert-dismissible fade show" id="alert"
+			role="alert">
+			<strong id="strong">Email</strong> is already taken!
+			<button type="button" class="btn-close" data-bs-dismiss="alert"
+				aria-label="Close"></button>
+		</div>
+		
+			<div class="myform overflow-auto">
+				<div class="row m-2">
+					<div class="col">
+						
+						<input type="text" name="fname" id="fname" class="form-control m-2 p-4"
+							placeholder="First name" th:value="${userdetail.fname + ' ' + userdetail.lname }" disabled required>
+					</div>
+					
+				</div>
+				<div class="row m-2">
+					<div class="col">
+						<input type="email" name="email" id="email" class="form-control m-2 p-4"
+							placeholder="Email Address " th:value="${userdetail.email}" disabled required>
+					</div>
+				</div>
+				<div class="row m-2">
+					<div class="col">
+						<input type="text" name="contact" id="contact"
+							class="form-control m-2 p-4" placeholder="Username" th:value="${userdetail.contactno}" disabled required>
+					</div>
+				</div>
+				
+				<div class="row m-2">
+					<div class="col-4">
+						<input type="number" name="streetno" class="form-control street m-2 p-4"
+							placeholder="Street No." min="0" th:value="${userdetail.address.streetno}" disabled required>
+					</div>
+					<div class="col-8">
+						<input type="text" name="streetname"
+							class="form-control streetname m-2 p-4" th:value="${userdetail.address.streetname}" disabled placeholder="Street Name"
+							required>
+					</div>
+				</div>
+				<div class="row m-2">
+					<div class="col-5">
+						<input type="text" name="baranngay" id="baranggay" required
+							class="form-control street m-2 p-4" th:value="${userdetail.address.baranngay}" disabled placeholder="Barangay">
+					</div>
+					<div class="col-7">
+						<input type="text" name="city" id="city"
+							class="form-control streetname m-2 p-4" placeholder="City" th:value="${userdetail.address.city}" disabled required>
+					</div>
+				</div>
+				<div class="row m-2">
+					<div class="col">
+						<input type="number" name="zipcode" id="zipcode"
+							class="form-control streetname m-2 p-4"  placeholder="Zip Code" disabled th:value="${userdetail.address.zipcode}" required>
+					</div>
+				</div>
+				<div class="row m-2">
+					<div class="col">
+						<input type="button" id="editbtn"
+							class="form-control btn btn-primary m-2 btn-lg" value="Edit Profile" required>
+							<input type="button" id="cancelbtn" style="display: none;"
+							class="form-control btn btn-danger m-2 btn-lg" value="Cancel Edit" required>
+					</div>
+				</div>
+				<div class="row m-2" id="savebtn" style="display: none;">
+					<div class="col">
+						<input type="button"
+							class="form-control btn btn-success m-2 btn-lg" value="Save Changes" required>
+					</div>
+				</div>
+			</div>
+			
+		
+	</div>
+
+		</div>
+
+	</div>
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+		crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+		integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+		crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+		integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+		crossorigin="anonymous"></script>
+	<script th:src="@{/js/bootstrap.bundle.js}"></script>
+<script th:src="@{/js/jquery.star-rating-svg.js}"></script>
+		
+		<script src="https://kit.fontawesome.com/5586b4d731.js"
+		crossorigin="anonymous"></script>
+		<script th:src="@{/js/profile.js}"></script>
+<script>
+$(document).ready(function(){
+	$(".my-rating").starRating({
+	    starSize: 15,
+	    readOnly : true,
+	    callback: function(currentRating, $el){
+	    	
+	    }
+	});
+	
+})
+
+</script>		
+</body>
+
+</html>

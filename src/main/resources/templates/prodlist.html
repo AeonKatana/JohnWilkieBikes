@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en"
+xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Product List</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+		integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+		integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+		crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+		integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+		crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+		integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+		crossorigin="anonymous"></script>
+
+<link rel="stylesheet" type="text/css" th:href="@{/css/star-rating-svg.css}">
+<link rel="stylesheet" th:href="@{/css/simplePagination.css}">
+	<style>
+		.mycontainer {
+			width: 90%;
+			margin-left: auto;
+			margin-right: auto;
+
+		}
+		
+
+		.pagination {
+			margin: 20px auto;
+			justify-content: center;
+		}
+		
+		.condition-true{
+			opacity: 0.5;
+		}
+		.condition-false{
+			display:block;
+		}
+		
+		@media only screen and (max-width: 600px) {
+ 			 
+			}
+		
+	</style>
+
+</head>
+
+<body>
+	<div class="m-0">
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+			<a class="navbar-brand" th:href="@{/}"><img src="https://ik.imagekit.io/aeonkatana/logo2_HGKTtB_eC.png?ik-sdk-version=javascript-1.4.3&updatedAt=1644313806003" alt="" width="100px"></a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01"
+				aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse text-center" id="navbarTogglerDemo01">
+				<form th:action="@{/search}" class="form-inline my-2 my-lg-0">
+					<input type="text" name="search" id="" class="form-control mr-sm-2" 
+						placeholder="Search">
+					<button class="btn btn-success my-2 my-sm-0 form-control" type="submit">Search</button>
+				</form>
+
+				<ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+					<li class="nav-item dropdown mr-5">
+						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+							data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							Categories
+						</a>
+						<div class="dropdown-menu bg-light my-4" aria-labelledby="navbarDropdownMenuLink" >
+						<th:block th:each="categ : ${categories}">
+							<a class="dropdown-item" th:href="@{/category/{categs}(categs=${categ.categoryname})}" th:text="${categ.categoryname}">Category 1</a>
+						</th:block>
+						</div>
+					</li>
+					<li class="nav-item mr-5">
+						<a class="nav-link" th:href="@{/mycart}"> <i class="fa-solid fa-cart-shopping text-light mx-1"></i> Cart <span class="sr-only">(current)</span></a>
+					</li>
+					<li class="nav-item mr-5">
+						<a class="nav-link" th:href="@{/orders/mydelivery}" tabindex="-1" aria-disabled="true"> <i class="fa-solid fa-bag-shopping text-light mx-1"></i>Purchases</a>
+					</li>
+					
+					<li class="nav-item dropdown mr-5" sec:authorize="isAuthenticated()">
+						<a class="nav-link dropdown-toggle" href="#" id="navbarDroddownMenuLink" role="button"
+						  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						 My Profile
+						 </a>
+						 <div class="dropdown-menu bg-light my-4" aria-labelledby="navbarDropdownMenuLink">
+						 	<a class="dropdown-item" th:href="@{/user/userprofile}">View My Profile</a>
+						 	<a class="dropdown-item" th:href="@{/orders/mydelivery}">My Deliveries</a>
+						 	<a class="dropdown-item" th:href="@{/orders/mypickup}">My Pick-ups</a>
+						 	<a class="dropdown-item" th:href="@{/orders/mycompleted}">My Completed</a>
+						 	<a class="dropdown-item" th:href="@{/orders/cancelled}">My Cancels</a>
+						 	<a class="dropdown-item" th:href="@{/perform-logout}">Logout</a>
+						 </div>
+						
+					</li>
+					<li class="nav-item mr-5"  sec:authorize="!isAuthenticated()">
+						<a class="nav-link" th:href="@{/login-page}">Login</a>
+					</li>
+					<li class="nav-item mr-5" sec:authorize="hasAuthority('ADMIN')">
+					  <a class="nav-link" th:href="@{/admin/dashboard}" ><i class="fa-solid fa-terminal"></i> Admin</a>
+					</li>
+					
+
+				</ul>
+
+			</div>
+
+		</nav>
+	</div>
+	<div class="mycontainer container my-2" th:if="${totalpage != 0}">
+		
+		
+	   <h3 class="text-left mt-3 text-primary" th:if="${categoryname != null}" th:text="${'Category : ' + categoryname}"></h3>
+	   <p class="text-left mt-3" th:unless="${categoryname != null}">Found [[${totalitems}]] items for '[[${parameter}]]'</p>
+	   <div class="text-right justify-content-end float-end">
+		<select class="form-select text-end justify-content-end float-end" onchange="if(this.value) window.location.href=this.value">
+			<option selected value="#">Sort results</option>
+			<option th:value="${sorturl + 'prodname'}">Sort by Name</option>
+			<option th:value="${sorturl + 'prodrating'}">Sort by Rating</option>
+			<option th:value="${sorturl + 'timesordered'}">Sort by Items Sold</option>
+			<option th:value="${sorturl + 'datetime'}"> Sort by Date</option>
+			
+		</select>
+		</div>
+		<div class="row m-2">
+			<div class="col d-flex flex-wrap justify-content-center" >
+				<div class="border listcard shadow-sm mycard mx-3 my-1" th:classappend="${bikeprod.prodstock == 0 ? 'condition-true' : 'condition-false'}" style="width:16rem;" th:each="bikeprod : ${products}">
+					<img th:src="${'https://ik.imagekit.io/aeonkatana/' + bikeprod.prodimgurl}" style="width:100%;height:150px;border:1px solid black;" alt="" class="card-img-top">
+					<div class="card-body" style="height:200px;">
+						<h5 class="card-title m-1 text-center" th:text="${bikeprod.prodname}">Sample Product 1</h5>
+						<p class="card-text m-0" th:text="${'Price :' + bikeprod.getPriceRange()}"></p>
+						<p class="card-text m-0" th:text="${'Stock :' + bikeprod.prodstock}">Stock</p>
+						<p class="card-text m-0" th:text="${'Sold :' + bikeprod.timesordered}"></p>
+						<div class="m-0 my-rating" th:data-rating="${bikeprod.prodrating}" th:id="${'rating' + bikeprod.id}" th:pid=${bikeprod.id}></div>
+						<a th:href="@{/product/{id}(id=${bikeprod.id})}"
+							class="btn btn-success form-control my-2">View Product</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="mycontainer container  my-5 p-5" th:unless="${totalpage != 0}">
+		 <h3 class="text-center mt-4 text-danger" th:text="${categoryname}"></h3>
+		<h4 class="text-center m-3" th:if="${categoryname != null}">No Bike Products on this category yet items</h4>
+		<h4 class="text-center m-3" th:if="${categoryname != null}">Please come back again later</h4>
+		<p class="text-center m-3 text-muted" th:unless='${categoryname != null}'>No items found for '[[${parameter}]]'</p>
+	</div>
+	<div class="text-center">
+		
+		<nav aria-label="Page navigation example" class="mypage" >
+			<ul class="pagination m-2" th:if="${totalpage > 1}" id="normal">
+				
+			</ul>
+			<ul th:unless="${totalpage > 1}">
+				
+			</ul>
+		</nav>
+	</div>
+	<script th:src="@{/js/jquery-3.6.0.min.js}"></script>
+<script th:src="@{/js/jquery.simplePagination.js}"></script>
+<script th:inline="javascript" th:src="@{/js/prodlist.js}"></script>
+<script th:src="@{/js/bootstrap.bundle.js}"></script>
+<script th:src="@{/js/jquery.star-rating-svg.js}"></script>
+<script src="https://kit.fontawesome.com/5586b4d731.js"
+		crossorigin="anonymous"></script>
+<script th:inline="javascript">
+$(document).ready(function(){
+	
+	
+	
+	//$(".my-rating").starRating('setReadOnly', true);
+		
+
+	const text = /*[[${url}]]*/ "";
+	const param = /*[[${parameter}]]*/ "";
+	let sortparam = /*[[${sortparam}]]*/"";
+	console.log(text + " " + param);
+	let suffix =  "";
+	if(text == "/search/sorted/page/"){
+		suffix = "?sort=" + sortparam + "&search=" + param ; 
+	}
+	else{
+		suffix = "?sort=" + sortparam;
+	}
+	
+	 $("#normal").pagination({
+		pages : "[[${totalpage}]]",
+		currentPage : "[[${currentPage}]]",
+		selectOnClick : false, 
+		hrefTextPrefix : text,
+		hrefTextSuffix : suffix,
+        cssStyle: 'light-theme'
+   });
+	
+});
+</script>
+</body>
+
+
+</html>
