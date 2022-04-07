@@ -7,6 +7,7 @@ import javax.mail.BodyPart;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -45,6 +46,7 @@ public class HomeController {
   @RequestMapping({"/"})
   public String homepage(Model model) {
     model.addAttribute("categories", this.homeservice.getAllCategories());
+    model.addAttribute("categcount", homeservice.categCount());
   model.addAttribute("featured",bikerepo.findAllByFeatured(true, PageRequest.of(0, 10, Sort.by("prodrating").descending())));
    model.addAttribute("onsale", bikerepo.findAllByProddiscoutGreaterThan(0F, PageRequest.of(0, 10)));
    model.addAttribute("onsalesize", bikerepo.findAllByProddiscoutGreaterThan(0F, PageRequest.of(0, 10)).getTotalElements());
@@ -54,6 +56,7 @@ public class HomeController {
   
   @GetMapping({"/search"})
   public String searchProducts(@RequestParam("search") String search, Model model) {
+	  model.addAttribute("categories", this.homeservice.getAllCategories());
     model.addAttribute("currentPage", Integer.valueOf(1));
     model.addAttribute("products", this.homeservice.searchProduct(search, 0, Sort.by("prodname")));
     model.addAttribute("totalpage", Integer.valueOf(this.homeservice.searchProduct(search, 0, Sort.by("prodname")).getTotalPages()));
@@ -163,11 +166,13 @@ public class HomeController {
     model.addAttribute("bikeprod", currentProd);
     model.addAttribute("variation", var);
     model.addAttribute("reviews",reviewRepo.findAllByBikeprod(currentProd, PageRequest.of(0, 5)));
+    model.addAttribute("reviewcount", reviewRepo.findAllByBikeprod(currentProd, PageRequest.of(0,5)).getTotalElements());
     return "viewprod";
   }
   
   @RequestMapping({"/mycart"})
   public String toMyCart(@AuthenticationPrincipal MyUserDetails userdetail, Model model) {
+	  model.addAttribute("categories", this.homeservice.getAllCategories());
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     if (authentication == null || authentication instanceof org.springframework.security.authentication.AnonymousAuthenticationToken) {
       model.addAttribute("mycart", null);

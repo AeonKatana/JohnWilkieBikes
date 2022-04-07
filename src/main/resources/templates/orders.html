@@ -126,9 +126,25 @@ a:hover {
 					<li class="nav-item mr-5">
 						<a class="nav-link" th:href="@{/orders/mydelivery}" tabindex="-1" aria-disabled="true"> <i class="fa-solid fa-bag-shopping text-light mx-1"></i>Purchases</a>
 					</li>
-					<li class="nav-item mr-5">
-						<a class="nav-link" href="#" sec:authorize="isAuthenticated()"><i class="fa-solid text-light fa-user"> </i> My Profile</a>
-						<a class="nav-link" th:href="@{/login-page}" sec:authorize="!isAuthenticated()">Login</a>
+					<li class="nav-item dropdown mr-5" sec:authorize="isAuthenticated()">
+					
+						<a class="nav-link dropdown-toggle" href="#" id="navbarDroddownMenuLink" role="button"
+						  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						  <i class="fa-solid text-light fa-user"> </i>
+						 My Profile
+						 </a>
+						 <div class="dropdown-menu bg-light my-4" aria-labelledby="navbarDropdownMenuLink">
+						 	<a class="dropdown-item" th:href="@{/user/userprofile}">View My Profile</a>
+						 	<a class="dropdown-item" th:href="@{/orders/mydelivery}">My Deliveries</a>
+						 	<a class="dropdown-item" th:href="@{/orders/mypickup}">My Pick-ups</a>
+						 	<a class="dropdown-item" th:href="@{/orders/mycompleted}">My Completed</a>
+						 	<a class="dropdown-item" th:href="@{/orders/cancelled}">My Cancels</a>
+						 	<a class="dropdown-item" th:href="@{/perform-logout}">Logout</a>
+						 </div>
+						
+					</li>
+					<li class="nav-item mr-5"  sec:authorize="!isAuthenticated()">
+						<a class="nav-link" th:href="@{/login-page}">Login</a>
 					</li>
 					<li class="nav-item mr-5" sec:authorize="hasAuthority('ADMIN')">
 					  <a class="nav-link" th:href="@{/admin/dashboard}" ><i class="fa-solid fa-terminal"></i> Admin</a>
@@ -146,13 +162,13 @@ a:hover {
 		<h4 class="m-2 text-center">My Purchases</h4>
 		<div class=" mx-2 mt-4 d-flex justify-content-center">
 			<a th:href="@{/orders/mydelivery}" class="border w-100 p-2" id="orderbtn">
-				<h5 class="text-center">Orders</h5>
+				<h5 class="text-center" th:classappend="${what == 'No orders for delivery' ? 'text-success' : ''}">Orders</h5>
 			</a> <a th:href="@{/orders/mypickup}" class="border w-100 p-2" id="reservebtn">
-				<h5 class="text-center">Reservations</h5>
+				<h5 class="text-center" th:classappend="${what == 'No orders for pickup' ? 'text-success' : ''}">Reservations</h5>
 			</a> <a th:href="@{/orders/mycompleted}" class="border w-100 p-2" id="completebtn">
-				<h5 class="text-center">Completed</h5>
+				<h5 class="text-center" th:classappend="${what == 'No completed orders yet' ? 'text-success' : ''}">Completed</h5>
 			</a> <a th:href="@{/orders/cancelled}" class="border w-100 p-2" id="cancelledbtn">
-				<h5 class="text-center">Cancelled</h5>
+				<h5 class="text-center" th:classappend="${what == 'No Cancelled Orders' ? 'text-success' : ''}">Cancelled</h5>
 			</a>
 		</div>
 
@@ -168,10 +184,10 @@ a:hover {
 					<div class="col-md-8">
 						<div class="card-body text-center">
 							<h5 class="m-2 card-title"><a th:href="@{/product/{id}(id=${order.bikeprod.id})}">[[${order.bikeprod.prodname}]]</a></h5>
-								
+							<span class="m-0 badge bg-success text-light p-1" th:text="${order.ordercode}"></span>
 						<p class="m-2" th:text="${'Variation :' + order.variation}"></p>
 						<p class="m-2" th:text="${'Quantity : ' + order.quantity}">Stocks</p>
-						<p class="m-2 price" th:text="${order.price}"> 5,000</p>
+						<p class="m-2 price" th:classappend="${order.ordertype == 'paypal' ? 'text-info' : ''}" th:text="${order.price}"> 5,000</p>
 						<div th:if="${what == 'No orders for delivery' || what == 'No orders for pickup'}">
 						<p class="m-2 " th:text="${'Placed on :' + #temporals.monthNameShort(order.datetime) + ' ' + #temporals.day(order.datetime) + ' ' + #temporals.year(order.datetime)}"> 5,000</p>
 						<p class="m-2 " th:text="${'Expected on :' + #temporals.monthNameShort(order.datetime.plusDays(10)) + ' ' + #temporals.day(order.datetime.plusDays(10)) + ' ' + #temporals.year(order.datetime.plusDays(10))}"> Some date</p>

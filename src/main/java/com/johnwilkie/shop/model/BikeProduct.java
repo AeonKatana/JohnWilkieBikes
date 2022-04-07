@@ -63,7 +63,7 @@ public class BikeProduct {
   
   private int timesordered;
   
-  @OneToMany(mappedBy = "bikeprod")
+  @OneToMany(mappedBy = "bikeprod", cascade = CascadeType.ALL , fetch = FetchType.LAZY)
   private Set<BikeCategory> category;
   
   @OneToMany(mappedBy = "bikeprod", cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
@@ -74,17 +74,22 @@ public class BikeProduct {
   @JsonManagedReference
   private Set<Cart> prodcart;
   
-  @OneToMany(mappedBy = "bikeprod")
+  @OneToMany(mappedBy = "bikeprod", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   @JsonManagedReference
   private Set<BikeProdVariation> variation;
   
-  @OneToMany(mappedBy = "bikeprod")
+  @OneToMany(mappedBy = "bikeprod" , cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   @JsonManagedReference
   private Set<Review> reviews;
   
-  @Transient
-  @JsonSerialize
+  @Formula("(Select sum(bpv.stocks) from bikeproduct bp"
+  		+ " join bike_prod_variation bpv on bpv.bikeprod_id = bp.id where bp.id = id)")
   private int prodstock;
+  
+  public int getProdstock() {
+	  return prodstock;
+  }
+  
   	
   @Transient
   @JsonSerialize
@@ -109,7 +114,7 @@ public class BikeProduct {
   }
   
   @Transient
-  public int getProdstock() {
+  public int getProdStock() {
 	int stocks = 0;
     for (BikeProdVariation var : this.variation)
       stocks += var.getStocks(); 

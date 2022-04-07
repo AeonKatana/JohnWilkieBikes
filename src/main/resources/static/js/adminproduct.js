@@ -65,7 +65,7 @@ $(document).ready(function(){
 				data : null,
 				render : function(){
 					return "<button class='btn btn-primary edit' data-bs-toggle='modal' "
-					+ "data-bs-target='#editprod'>Edit</button>" + "<button class='btn btn-danger'>Delete</button>";
+					+ "data-bs-target='#editprod'>Edit</button>" + "<button class='btn btn-danger delete' data-bs-toggle='modal' data-bs-target='#deletemodal'>Delete</button>";
 				}
 			}]
 	});
@@ -405,9 +405,41 @@ $(document).ready(function(){
 			}
 		});
 	});
+	let deleteid = 0;
+	let deletename = "";
+	$("#prodtable tbody").on('click', '.delete', function(){
+		var data = cptable.row($(this).parents('tr')).data(); 
+		deletename = data.prodname;
+		deleteid = data.id;
+		alert(deletename);
+	});
 	
 	
+	$("#typename").keyup(function(){
+		
+		if($(this).val() === deletename){
+			$("#deleteprod").prop("disabled", false);
+		}
+		else{
+			$("#deleteprod").prop("disabled", true);
+		}
+		
+	});
 	
+	
+	$("#deleteprod").click(function(){
+		
+		$.ajax({
+			
+			type : "DELETE",
+			url : "/admin/delete/deleteProduct/" + deleteid,
+			success : function(result){
+				alert(result);
+				window.location.reload();
+			}
+		})
+		
+	});
 	
 	
 });

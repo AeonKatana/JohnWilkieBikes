@@ -1,6 +1,11 @@
 package com.johnwilkie.shop.controller;
 
+import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,6 +38,9 @@ public class OrderController {
   
   @Autowired
   private ReviewRepo reviewrepo;
+  
+  @Autowired
+  private JavaMailSender sender;
   
   @RequestMapping({"/mydelivery/page/{page}"})
   public String deliveryPage(@AuthenticationPrincipal MyUserDetails userdetail, Model model, @PathVariable("page") int page) {
@@ -136,7 +144,7 @@ public class OrderController {
   public String cancelledOrders(@AuthenticationPrincipal MyUserDetails userdetail, Model model, @PathVariable("page") int page) {
 	  User user = userdetail.getUser();
 	    System.out.println(user.getFname());
-	    model.addAttribute("currentPage", Integer.valueOf(1));
+	    model.addAttribute("currentPage", Integer.valueOf(page));
 	    model.addAttribute("what", "No Cancelled Orders");
 	    model.addAttribute("orders", this.orderservice.findAllByUserAndStatus(user, "CANCELLED", "CANCELLING",page - 1));
 	    model.addAttribute("totalpage", Integer.valueOf(this.orderservice.findAllByUserAndStatus(user,"CANCELLED","CANCELLING", page - 1).getTotalPages()));
@@ -150,9 +158,32 @@ public class OrderController {
   
   @PutMapping("/cancelorder/{id}")
   @ResponseBody
-  public String cancelOrder(@RequestParam("status") String status,@PathVariable("id") long id) {
-	  
+  public String cancelOrder(HttpServletRequest request,@RequestParam("status") String status,@PathVariable("id") long id,@AuthenticationPrincipal MyUserDetails user) {
+	  MimeMessage message = sender.createMimeMessage();
+      MimeMessageHelper helper = new MimeMessageHelper(message);
+      
+    
+      
+      
 	    Orders order = orderRepo.findById(id).orElse(null);
+	    
+	    
+	    String text = user.getUser().getFname() +" " + user.getUser().getLname() + " has requested to cancel his/her order"
+	    		+ "<p> " + order.getBikeprod().getProdname() + " : " + order.getVariation() + " with the reference number of <span style=\"color: lightblue;\">" + order.getOrdercode() +"</span> </p>"
+	    		+ "<p>You may check the cancellation request by clicking the link down below</p>"
+	    		+ "<h3><a href=\"[[URL]]\" target=\"self\">View Cancellations</a></h3>";
+	    	String url="http://" + request.getServerName() + ":" + request.getServerPort() + "/admin/cancels";
+	      text = text.replace("[[URL]]", url);
+	      try {
+		    	 helper.setFrom("aeonkatana@gmail.com", "John Wilkie's Online Bike Shop");
+		    	 helper.setSubject("JWBikes Order Update"); 
+		    	 helper.setTo("aeonkatana@gmail.com");
+		    	 helper.setText(text, true);
+		    	 sender.send(message);
+		      }catch(Exception e) {
+		    	  
+		  }
+	    
 		order.setStatus(status);
 		orderRepo.save(order);
 		return "Success";

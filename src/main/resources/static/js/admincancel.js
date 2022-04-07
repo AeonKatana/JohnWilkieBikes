@@ -11,8 +11,6 @@ $(document).ready(function(){
       		$(row).addClass( 'text-info' );
     		}
   		},
-  		"aaSorting": [],
-  		 "order": [],
 		"scrollY":        "250px",
         "scrollCollapse": true,
 		"serverSide": false,
@@ -25,7 +23,7 @@ $(document).ready(function(){
               "visible": false	
 		}],
 		'ajax': {
-			url: '/admin/orders/list', type: 'GET', dataSrc: ""
+			url: '/admin/orders/cancellation', type: 'GET', dataSrc: ""
 		},
 		"pageLength": 10,
 		"lengthChange": true,
@@ -48,8 +46,6 @@ $(document).ready(function(){
 				}, {
 			data: "variation"
 				},{
-			data : "quantity"
-				},{
 			data: "price",
 					render : function(data){
 						return formatter.format(data);
@@ -63,18 +59,15 @@ $(document).ready(function(){
 			data: "status",
 					render : function(data,type,row){
 						if(data === 'DELIVERED' || data === 'PICKEDUP'){
-							return "<button class='btn btn-primary form-control view' data-bs-target='#viewuser' data-bs-toggle='modal'>View</button><select disabled class='form-select statuses' id='status"+ row.id +"'>"            
+							return "<button class='btn btn-primary form-control view' data-bs-target='#viewuser' data-bs-toggle='modal' disabled>View</button><select disabled class='form-select statuses' id='status"+ row.id +"'>"            
 						       + "<option value='" + data +"' selected>"+ data +"</option>"
 						       +"</select>";
 						}
 						else
 						return "<button class='btn btn-primary form-control view' data-bs-target='#viewuser' data-bs-toggle='modal'>View</button><select class='form-select statuses' id='status"+ row.id +"'>"            
 						       + "<option value='" + data +"' selected>"+ data +"</option>"
-						       + "<option value='PACKAGING'>PACKAGING</option>"
-						       + "<option value='DELIVERING'>ON DELIVERY</option>"
-						       + "<option value='DELIVERED'>DELIVERED</option>"
-						       + "<option value='PICKEDUP'> PICKED UP</option>"
-						       + "<option value='CANCELLED'>CANCEL</option>"
+						       + "<option value='CANCELLED'>CONFIRM</option>"
+						       +" <option value='PROCESSING'>REJECT</option>"
 						       +"</select>";
 					}
 				}]
@@ -89,7 +82,6 @@ $(document).ready(function(){
 	$("#ordertable tbody").on('change','.statuses',function(){
 		var data = ordertable.row($(this).parents('tr')).data(); 
 		let status = $('#status' + data.id).val();
-		
 		$.ajax({
 			type : "PUT",
 			url : "/admin/orders/changeStatus/" + data.id,

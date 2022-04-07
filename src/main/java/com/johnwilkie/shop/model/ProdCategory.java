@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,5 +32,9 @@ public class ProdCategory {
   @OneToMany(mappedBy = "category" , cascade = CascadeType.ALL, orphanRemoval = true)
   private Set<BikeCategory> category;
   
+  @Transient
+  public int countprod() {
+	  return category.size();
+  }
   
 }

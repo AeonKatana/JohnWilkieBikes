@@ -48,6 +48,7 @@ xmlns="http://www.w3.org/1999/xhtml"
 		
 		.dropdown-item:hover{
 			background-color:lime;
+			
 		}
 		
 		
@@ -110,7 +111,7 @@ xmlns="http://www.w3.org/1999/xhtml"
 							data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							Categories
 						</a>
-						<div class="dropdown-menu bg-dark text-light" aria-labelledby="navbarDropdownMenuLink" >
+						<div class="dropdown-menu bg-light my-2" aria-labelledby="navbarDropdownMenuLink" >
 						<th:block th:each="categ : ${categories}">
 							<a class="dropdown-item" th:href="@{/category/{categs}(categs=${categ.categoryname})}" th:text="${categ.categoryname}">Category 1</a>
 						</th:block>
@@ -122,10 +123,25 @@ xmlns="http://www.w3.org/1999/xhtml"
 					<li class="nav-item mr-5">
 						<a class="nav-link" th:href="@{/orders/mydelivery}" tabindex="-1" aria-disabled="true"> <i class="fa-solid fa-bag-shopping text-light mx-1"></i>Purchases</a>
 					</li>
-					<li class="nav-item mr-5">
-						<a class="nav-link" href="#" sec:authorize="isAuthenticated()"> <i class="fa-solid text-light fa-user"></i>  My Profile</a>
+					<li class="nav-item dropdown mr-5" sec:authorize="isAuthenticated()">
+					
+						<a class="nav-link dropdown-toggle" href="#" id="navbarDroddownMenuLink" role="button"
+						  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						  <i class="fa-solid text-light fa-user"> </i>
+						 My Profile
+						 </a>
+						 <div class="dropdown-menu bg-light my-4" aria-labelledby="navbarDropdownMenuLink">
+						 	<a class="dropdown-item" th:href="@{/user/userprofile}">View My Profile</a>
+						 	<a class="dropdown-item" th:href="@{/orders/mydelivery}">My Deliveries</a>
+						 	<a class="dropdown-item" th:href="@{/orders/mypickup}">My Pick-ups</a>
+						 	<a class="dropdown-item" th:href="@{/orders/mycompleted}">My Completed</a>
+						 	<a class="dropdown-item" th:href="@{/orders/cancelled}">My Cancels</a>
+						 	<a class="dropdown-item" th:href="@{/perform-logout}">Logout</a>
+						 </div>
 						
-						<a class="nav-link" th:href="@{/login-page}" sec:authorize="!isAuthenticated()">Login</a>
+					</li>
+					<li class="nav-item mr-5"  sec:authorize="!isAuthenticated()">
+						<a class="nav-link" th:href="@{/login-page}">Login</a>
 					</li>
 					<li class="nav-item mr-5" sec:authorize="hasAuthority('ADMIN')">
 					  <a class="nav-link" th:href="@{/admin/dashboard}" ><i class="fa-solid fa-terminal"></i> Admin</a>
@@ -142,8 +158,8 @@ xmlns="http://www.w3.org/1999/xhtml"
 	<div class="body">
 		<div class="container text-center">
 		
-			<h4 class="card-title mt-5 text-center"><img th:src="@{/images/featured.png}" alt=""></h4>
-			<div class="mycategories mb-5 p-2 text-center d-flex " th:classappend="${featuresize > 1 ? 'justify-content-left' : 'justify-content-center'}">
+			<h4 class="card-title mt-5 text-center"><img th:src="@{/images/featured.png}" alt="" th:if="${featuresize > 0}"></h4>
+			<div th:if="${featuresize > 0}" class="mycategories mb-5 p-2 text-center d-flex " th:classappend="${featuresize > 1 ? 'justify-content-left' : 'justify-content-center'}">
 				<div class="card featured" style="width: 16rem; margin:auto;" th:each="feature : ${featured}" th:classappend="${feature.prodstock == 0 ? 'condition-true' : ''}">			
 					
 					<img th:src="${'https://ik.imagekit.io/aeonkatana/' + feature.prodimgurl}" style="width:100%;height:150px;border:1px solid black;" alt="" class="card-img-top">
@@ -160,9 +176,9 @@ xmlns="http://www.w3.org/1999/xhtml"
 					
 				</div>
 			</div>
-			<h4 class="card-title mt-5 text-center"><img th:src="@{/images/categorylogo.png}" alt="" width="200px;"></h4>
-			<div class="mycategories mb-5 p-2 text-center d-flex" th:classappend="${#lists.size(categories) > 5 ? 'justify-content-left' : 'justify-content-center'}">
-				<div class="card m-auto" style="width: 12rem;" th:each="category : ${categories}">
+			<h4 class="card-title mt-4 text-center"><img th:src="@{/images/categorylogo.png}" alt="" width="200px;" th:if="${categcount > 0}"></h4>
+			<div class="mycategories mb-5 p-2 text-center d-flex" th:if="${categcount > 0}">
+				<div class="card m-auto" style="width: 12rem;" th:each="category : ${categories}" th:if="${category.countprod > 0}">
 					<img src="https://ik.imagekit.io/aeonkatana/bikebg_gA_Xrv70s.jpg?ik-sdk-version=javascript-1.4.3&updatedAt=1644313804269" alt="" class="card-img-top">
 					<div class="card-body" >
 						<h5 class="card-title" th:text="${category.categoryname}">Bicycle Parts</h5>
@@ -172,7 +188,7 @@ xmlns="http://www.w3.org/1999/xhtml"
 				</div>
 			</div>
 		
-			<h4 class="card-title mt-5 text-center" th:if="${onsalesize > 0}"><img th:src="@{/images/onsale.png}" alt=""></h4>
+			<h4 class="card-title mt-5 text-center" th:if="${onsalesize > 0}"><img th:src="@{/images/onsale.png}" alt="" th:if="${onsalesize > 0}"></h4>
 			<div class="mycategories mb-5 p-2 text-center d-flex" th:classappend="${onsalesize > 1 ? 'justify-content-left' : 'justify-content-center'}">
 				<div class="card m-auto" th:classappend="${sale.prodstock == 0 ? 'condition-true' : ''}" style="width: 16rem;" th:each="sale : ${onsale}">			
 					<img th:src="${'https://ik.imagekit.io/aeonkatana/' + sale.prodimgurl}" style="width:100%;height:150px;border:1px solid black;" alt="" class="card-img-top">

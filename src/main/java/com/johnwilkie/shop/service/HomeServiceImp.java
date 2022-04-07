@@ -33,7 +33,7 @@ public class HomeServiceImp implements HomeService {
   private BikeProdVariationRepo variationrepo;
   
   public Page<BikeProduct> getAllByCategory(String category, int page, Sort sort) {
-    Page<BikeProduct> prodlist = this.bikerepo.getAllByCategory(category, (Pageable)PageRequest.of(page, 3 , sort.descending()));
+    Page<BikeProduct> prodlist = this.bikerepo.getAllByCategory(category, (Pageable)PageRequest.of(page, 10 , sort.descending()));
     return prodlist;
   }
   
@@ -62,7 +62,12 @@ public class HomeServiceImp implements HomeService {
   }
   
   public Page<BikeProduct> searchProduct(String search, int page , Sort sort) {
-    return this.bikerepo.findByProdnameContainingOrProddescContaining(search, search, (Pageable)PageRequest.of(page, 3, sort.descending()));
+    return this.bikerepo.findByProdnameContainingOrProddescContaining(search, search, (Pageable)PageRequest.of(page, 10, sort.descending().and(Sort.by("prodstock").descending())));
   }
+
+@Override
+public long categCount() {
+	return categoryrepo.countProductswithCategory();
+}
 }
 

@@ -29,7 +29,7 @@ $(document).ready(function() {
 		$("#addcartbtn").prop("disabled", false);
 		varid = $(this).attr("vid");
 		$("#addcartbtn").css("cursor", "pointer");
-
+		$("#buynow").prop("disabled", false);
 		$.ajax({
 			type: "GET",
 			url: "/product/" + prodid + "/" + varid,
@@ -106,10 +106,39 @@ $(document).ready(function() {
 			}
 		});
 	});
+	
+	
+	$("#buynow").click(function(){
+		
+		$.ajax({
+			type : "POST",
+			url : "/buynow",
+			success : function(result){
+				if(!result){
+					$("#buynowmsg").text("Login First")
+				}
+				else{	
+					$("#buynowmsg").css("display","none");
+					$("#exampleModalLongTitle").text("Confirm");
+				    $("#checkout").css("display","block");
+					$(".varid").val(varid);
+					$(".qty").val(qty);
+					console.log(qty);
+				}	
+			}
+		});
+		
+	});
+	
 
 	$("#loginbtn").click(function() {
-		var url = "http://localhost:8080/login-page";
+		var url = "/login-page";
 		window.location.href = url;
 	});
+	$("#loginbtns").click(function() {
+		var url = "/login-page";
+		window.location.href = url;
+	});
+
 
 });

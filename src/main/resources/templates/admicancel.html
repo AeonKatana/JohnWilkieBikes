@@ -164,38 +164,28 @@
 			<div class="container-fluid px-4">
 				<div class="row g-3 my-2">
 					
-					<div class="col-md-4">
+					<div class="col-md-6">
 						<div
 							class="p-3 bg-info shadow-lg d-flex justify-content-around align-items-center rounded">
 							<div>
-								<h3 class="fs-2 text-white" th:text="${totalorders}"></h3>
-								<p class="fs-6 fw-bold text-white">Total Orders</p>
+								<h3 class="fs-2 text-white" th:text="${totalcancel}"></h3>
+								<p class="fs-6 fw-bold text-white">Total Cancelled</p>
 							</div>
 							<i class="fas fa-building fs-1 p-3 text-white"></i>
 						</div>
 					</div>
 
-					<div class="col-md-4">
+					<div class="col-md-6">
 						<div
 							class="p-3 bg-success shadow-sm d-flex justify-content-around align-items-center rounded">
 							<div>
-								<h3 class="fs-2 text-white" th:text="${monthlyorders}"></h3>
-								<p class="fs-6 fw-bold text-white">Monthly Orders</p>
+								<h3 class="fs-2 text-white" th:text="${cancelrequests}"></h3>
+								<p class="fs-6 fw-bold text-white">Cancellation Requests</p>
 							</div>
 							<i class="fas fa-user-group fs-1  p-3 text-white"></i>
 						</div>
 					</div>
 
-					<div class="col-md-4">
-						<div
-							class="p-3 bg-danger shadow-sm d-flex justify-content-around align-items-center rounded">
-							<div>
-								<h3 class="fs-2 text-white" th:text="${yearlyorders}">0</h3>
-								<p class="fs-6 fw-bold text-white">Yearly Orders</p>
-							</div>
-							<i class="fas fa-triangle-exclamation fs-1 p-3 text-white"></i>
-						</div>
-					</div>
 					
 				</div>
 
@@ -248,6 +238,6 @@
 			el.classList.toggle("toggled");
 		};
 	</script>
-<script th:src="@{/js/adminorders.js}"></script>
+<script th:src="@{/js/admincancel.js}"></script>
 </body>
 </html>

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.johnwilkie.shop.dto.ReviewModel;
@@ -72,6 +73,18 @@ public class ProductController {
     BikeProduct bikeprod = this.prodservice.selectedProd(Long.valueOf(id));
     BikeProdVariation var = this.variationrepo.findById(Long.valueOf(varid)).orElse(null);
     return this.cartservice.addToCart(bikeprod, var, qty, user);
+  }
+  
+  
+  @PostMapping("/buynow")
+  public boolean buynow() {
+	  Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    if (authentication == null || authentication instanceof org.springframework.security.authentication.AnonymousAuthenticationToken) {
+	      System.out.println("WTF");
+	      return false;
+	    } 
+	    System.out.println("Yo!");
+	    return true;
   }
   
   @PostMapping("/product/addReview/{id}/{oid}")

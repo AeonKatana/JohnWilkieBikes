@@ -3,16 +3,19 @@ package com.johnwilkie.shop.controller;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -70,6 +73,9 @@ public class AdminController {
 
 	@Autowired
 	private OrderRepo orderrepo;
+	
+	@Autowired
+	private JavaMailSender sender;
 	
 	
 	@GetMapping("/dashboard")
@@ -193,6 +199,12 @@ public class AdminController {
 		return orderrepo.findTop5ByStatusNotAndStatusNotOrderByDatetimeDesc("CANCELLED", "CANCELLING");
 	}
 	
+	@GetMapping("/orders/cancellation")
+	@ResponseBody
+	public List<Orders> getCancelledOrders(){
+		return orderrepo.getAllCancelOrders();
+	}
+	
 	
 	@GetMapping("/orders/getOrder/{id}")
 	@ResponseBody
@@ -202,10 +214,59 @@ public class AdminController {
 	
 	@PutMapping("/orders/changeStatus/{id}")
 	@ResponseBody
-	public String changeStatus(@PathVariable("id") long id, @RequestParam("status") String status) {
+	public String changeStatus(@PathVariable("id") long id, @RequestParam("status") String status, HttpServletRequest request) {
 		Orders order = orderrepo.findById(id).orElse(null);
+		BikeProduct bp = order.getBikeprod();
+		User user = order.getUser();
+		BikeProdVariation bpv = bp.getVariation().stream().filter(x -> x.getName().equals(order.getVariation())).findFirst().get();
+		MimeMessage message = sender.createMimeMessage();
+	    MimeMessageHelper helper = new MimeMessageHelper(message);
+	    String text  = "";
+	    String url = "";
+		if(status.equals("CANCELLED")) {
+		      text = "Your cancellation request for the product " + bp.getProdname() + " with order reference " + order.getOrdercode() +" has been successfully acknowledged"
+		    		  + "<p>If this order was paid using Paypal, refunds will be returned within a few hours.Otherwise the contact the shop</p>"
+		    		  + "<h3><a href=\"[[URL]]\" target=\"self\">View my cancelled orders</a></h3>";
+		     url = "http://" + request.getServerName() + ":" + request.getServerPort() + "/orders/cancelled";
+		     text = text.replace("[[URL]]", url);
+			bpv.setStocks(order.getQuantity() + bpv.getStocks());
+			bikerepo.save(bpv);
+		}
+		
+		else if(status.equals("DELIVERED") || status.equals("PICKEDUP")) {
+			 text = "Your order for the product " + bp.getProdname() + " with order reference " + order.getOrdercode() +" has been successfully delivered/picked up"
+		    		  + "<p>Thank you for your purchase and hope you enjoy our product</p>"
+					 + "<h3><a href=\"[[URL]]\" target=\"self\">View my completed orders</a></h3>";
+		     url = "http://" + request.getServerName() + ":" + request.getServerPort() + "/orders/completed";
+		     text = text.replace("[[URL]]", url);
+		}
+		else if(status.equals("DELIVERING")) {
+			 text = "Your order for the product " + bp.getProdname() + " with order reference " + order.getOrdercode() +" is now being delivered. "
+		    		  + "<p>Please keep your mobile phone active for calls or text messages</p>"
+					 +"<p>The delivery personnel will try to make a contact with you</p>";
+		}
+		else if(status.equals("PACKAGING")) {
+			 text = "Your order for the product " + bp.getProdname() + " with order reference " + order.getOrdercode() +" is now being packaged. "
+		    		  + "<p>To see your orders you can click the link down below.</p>"
+					 +"<h3><a href=\"[[URL]]\" target=\"self\">View my orders</a></h3>";
+			 url = "http://" + request.getServerName() + ":" + request.getServerPort() + "/orders/mydelivery";
+		     text = text.replace("[[URL]]", url);
+		}
 		order.setStatus(status);
 		orderrepo.save(order);
+		
+		
+		 try {
+	    	 helper.setFrom("aeonkatana@gmail.com", "John Wilkie's Online Bike Shop");
+	    	 helper.setSubject("JWBikes Order Update"); 
+	    	 helper.setTo(user.getEmail());
+	    	 helper.setText(text, true);
+	    	 sender.send(message);
+	      }catch(Exception e) {
+	    	  
+	      }
+		
+		
 		return "Success";
 	}
 
@@ -282,6 +343,7 @@ public class AdminController {
 
 	@PostMapping("/newProduct")
 	@ResponseBody
+	@Transactional
 	public ProductUploadModel deserialize(@RequestParam("prod") String prod, @RequestParam("file") MultipartFile file,
 			@RequestParam("desc") String desc, @RequestParam("price") List<String> price,
 			@RequestParam("stock") List<String> stock, @RequestParam("name") List<String> name) throws IOException {
@@ -351,4 +413,14 @@ public class AdminController {
 		return "Category Removed!";
 	}
 
+	@Transactional
+	@DeleteMapping("/delete/deleteProduct/{id}")
+	@ResponseBody
+	public String deleteBike(@PathVariable("id") long id) {
+		
+		BikeProduct bp =  bikeprodrepo.findById(id).orElse(null);
+		bikeprodrepo.delete(bp);
+		
+		return "Product Deleted";
+	}
 }

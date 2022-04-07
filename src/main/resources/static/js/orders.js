@@ -43,6 +43,7 @@ $(document).ready(function() {
 		 data : JSON.stringify(review),
 		 success : function(result){
 			alert(result);
+			window.location.reload();
 		}
 		})
 	  
@@ -55,7 +56,9 @@ $(document).ready(function() {
 	});
 	
 	$("#cancelorder").click(function(){
-		
+		$(this).prop("disabled",true);
+		$(this).text("Cancelling...");
+		$("#closenotif").prop("disabled",true);
 		$.ajax({
 			type : "PUT",
 			url : "/orders/cancelorder/" + orderid,
@@ -63,8 +66,16 @@ $(document).ready(function() {
 				status : "CANCELLING"
 			},
 			success: function(result){
-				window.location.reload();
+				$(this).text(result);
+				setTimeout(function(){
+					window.location.reload();
+				},2000)
+				
+			},
+			error : function(){
+				alert("An error occured. Please contact John Wilkie's Bike Shop to address this problem");
 			}
+			
 		});
 		
 		

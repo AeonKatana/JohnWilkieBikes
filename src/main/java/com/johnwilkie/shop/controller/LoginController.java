@@ -20,6 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.johnwilkie.shop.dto.ForgotModel;
 import com.johnwilkie.shop.model.PasswordModel;
 import com.johnwilkie.shop.model.User;
+import com.johnwilkie.shop.service.HomeService;
 import com.johnwilkie.shop.service.LoginService;
 
 @Controller
@@ -28,6 +29,9 @@ public class LoginController {
   
 	@Autowired
 	private LoginService loginservice;
+	
+	@Autowired
+	private HomeService homeservice;
 	
 	
   @RequestMapping({"/perform-logout"})
@@ -44,7 +48,8 @@ public class LoginController {
   }
   
   @RequestMapping({"/login-page"})
-  public String loginPage() {
+  public String loginPage(Model model) {
+	  model.addAttribute("categories", this.homeservice.getAllCategories());
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     if (authentication == null || authentication instanceof org.springframework.security.authentication.AnonymousAuthenticationToken)
       return "loginform"; 

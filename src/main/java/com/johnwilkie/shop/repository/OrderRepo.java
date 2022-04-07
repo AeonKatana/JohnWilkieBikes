@@ -30,6 +30,8 @@ public interface OrderRepo extends JpaRepository<Orders, Long> {
 List<Orders> findAllByStatusNotAndStatusNotOrderByDatetimeDesc(String string, String string2);
 List<Orders> findTop5ByStatusNotAndStatusNotOrderByDatetimeDesc(String string, String string2);
 
+
+
   @Query("SELECT o from Orders o join o.user u where (o.ordertype =:ordertype or o.ordertype =:ordertype2) and o.status != 'CANCELLED'  "
   		+ "and o.status != 'DELIVERED' and o.status != 'PICKED UP' and o.status != 'CANCELLING' and u.id =:id")
   Page<Orders> getAllOrdersByUserAndOrderType(@Param("id") long id,@Param("ordertype") String ordertype, @Param("ordertype2") String ordertype2, Pageable pageable);

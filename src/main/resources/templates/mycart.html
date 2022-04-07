@@ -53,9 +53,9 @@ xmlns="http://www.w3.org/1999/xhtml"
 							data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							Categories
 						</a>
-						<div class="dropdown-menu bg-dark text-light" aria-labelledby="navbarDropdownMenuLink" >
+						<div class="dropdown-menu bg-light my-4" aria-labelledby="navbarDropdownMenuLink" >
 						<th:block th:each="categ : ${categories}">
-							<a class="dropdown-item" th:href="@{/category/{categs}(categs=${categ.categoryname})}" th:text="${categ.categoryname}">Category 1</a>
+							<a class="dropdown-item text-dark" th:href="@{/category/{categs}(categs=${categ.categoryname})}" th:text="${categ.categoryname}">Category 1</a>
 						</th:block>
 						</div>
 					</li>

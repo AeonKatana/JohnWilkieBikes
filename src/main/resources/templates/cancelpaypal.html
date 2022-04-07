@@ -70,29 +70,11 @@
 		</nav>
 	</div>
 	
-	<div class="container card text-center p-4 mx-auto my-5" th:if="${orderType == 'cod'}">
+	<div class="container card text-center p-4 mx-auto my-5">
 		<img src="https://ik.imagekit.io/aeonkatana/jw_WCsj88EP4a.png?ik-sdk-version=javascript-1.4.3&updatedAt=1644313805858" width="250px;" style="margin-left:auto;margin-right:auto;">
 		
-		<h3 class="m-3">Thank you for your purchase!</h3>
-		<p class="m-2">Your order is now being processed</p>
-		<span class="m-2">Order Reference/s : </span>
-		<p class="m-2 text-primary" th:text="${ref}" th:each="ref : ${orderref}"></p>
-		<p class="m-2">Please wait and prepare the amount of money until
-		before the your order arrives.</p>
-		<div class="m-2">
-			<a th:href="@{/}" class="btn btn-success w-25">Shop More</a>
-		</div>
-		
-	
-	</div>
-	<div class="container card text-center p-4 mx-auto my-5" th:if="${orderType == 'cop'}">
-		<img src="https://ik.imagekit.io/aeonkatana/jw_WCsj88EP4a.png?ik-sdk-version=javascript-1.4.3&updatedAt=1644313805858" width="250px;" style="margin-left:auto;margin-right:auto;">
-		
-		<h3 class="m-3">Thank you for your purchase!</h3>
-		<p class="m-2">Your order is now being processed</p>
-		<span class="m-2">Order References :</span>
-		<p class="m-2 text-primary" th:text="${ref}" th:each="ref : ${orderref}"></p>
-		<p class="m-2">We'll notify you if it's ready to be picked-up</p>
+		<h3 class="m-3">The online payment was cancelled!</h3>
+		<p class="m-2">Please order again soon!</p>
 		<div class="m-2">
 			<a th:href="@{/}" class="btn btn-success w-25">Shop More</a>
 		</div>
@@ -100,17 +82,6 @@
 	
 	</div>
 	
-	<div class="container card text-center p-4 mx-auto my-5" th:if="${orderType == 'paypal'}">
-		<img src="https://ik.imagekit.io/aeonkatana/jw_WCsj88EP4a.png?ik-sdk-version=javascript-1.4.3&updatedAt=1644313805858" width="250px;" style="margin-left:auto;margin-right:auto;">
-		
-		<h3 class="m-3">Payment Successful!</h3>
-		<p class="m-2">Your order is now being processed</p>
-		<p class="m-2">We'll notify you when it's ready</p>
-		<div class="m-2">
-			<a th:href="@{/}" class="btn btn-success w-25">Shop More</a>
-		</div>
-	
-	</div>
 	
 
 <script th:src="@{/js/jquery-3.6.0.min.js}"></script>

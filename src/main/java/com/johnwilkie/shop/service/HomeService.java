@@ -24,4 +24,6 @@ public interface HomeService {
   int getAllProductStocks(long paramLong);
   
   Page<BikeProduct> searchProduct(String paramString, int paramInt, Sort sort);
+  
+  long categCount();
 }
