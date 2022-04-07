@@ -57,7 +57,7 @@ public class RegisterServiceImp implements RegisterService {
     		  		+ "Thank you and happy shopping! <br>"
     		  		+ "John Wilkie's Online Bike Shop.";
       
-      String verifyURL = "http://" + request.getServerName() + ":" + request.getServerPort() +"/verify?token=" + newuser.getVerifytoken();
+      String verifyURL = "https://" + request.getServerName()  +"/verify?token=" + newuser.getVerifytoken();
       text = text.replace("[[URL]]", verifyURL);
       try {
     	 helper.setFrom("aeonkatana@gmail.com", "John Wilkie's Online Bike Shop");

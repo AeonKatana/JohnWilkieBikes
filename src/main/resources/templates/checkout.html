@@ -176,7 +176,7 @@
 							
 					</div>
 					<div class="text-center m-2">
-						<input type="submit" class="btn btn-success" value="Confirm Order"/>
+						<input type="submit" id="confirmbtn" class="btn btn-success" value="Confirm Order"/>
 					</div>
 				</form>
 				
@@ -213,7 +213,13 @@
 	<script>
 		$(document).ready(
 				function() {
-
+					
+					$("#confirmbtn").click(function(){
+						$(this).prop("disabled",true);
+						$(this).val("Please wait");
+					})
+					
+					
 					function getTotal() {
 						$.ajax({
 							type : "GET",

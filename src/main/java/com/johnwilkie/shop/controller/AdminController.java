@@ -228,7 +228,7 @@ public class AdminController {
 		      text = "Your cancellation request for the product " + bp.getProdname() + " with order reference " + order.getOrdercode() +" has been successfully acknowledged"
 		    		  + "<p>If this order was paid using Paypal, refunds will be returned within a few hours.Otherwise the contact the shop</p>"
 		    		  + "<h3><a href=\"[[URL]]\" target=\"self\">View my cancelled orders</a></h3>";
-		     url = "http://" + request.getServerName() + ":" + request.getServerPort() + "/orders/cancelled";
+		     url = "https://" + request.getServerName() + "/orders/cancelled";
 		     text = text.replace("[[URL]]", url);
 			bpv.setStocks(order.getQuantity() + bpv.getStocks());
 			bikerepo.save(bpv);
@@ -238,7 +238,7 @@ public class AdminController {
 			 text = "Your order for the product " + bp.getProdname() + " with order reference " + order.getOrdercode() +" has been successfully delivered/picked up"
 		    		  + "<p>Thank you for your purchase and hope you enjoy our product</p>"
 					 + "<h3><a href=\"[[URL]]\" target=\"self\">View my completed orders</a></h3>";
-		     url = "http://" + request.getServerName() + ":" + request.getServerPort() + "/orders/completed";
+		     url = "https://" + request.getServerName()  + "/orders/completed";
 		     text = text.replace("[[URL]]", url);
 		}
 		else if(status.equals("DELIVERING")) {
@@ -250,7 +250,7 @@ public class AdminController {
 			 text = "Your order for the product " + bp.getProdname() + " with order reference " + order.getOrdercode() +" is now being packaged. "
 		    		  + "<p>To see your orders you can click the link down below.</p>"
 					 +"<h3><a href=\"[[URL]]\" target=\"self\">View my orders</a></h3>";
-			 url = "http://" + request.getServerName() + ":" + request.getServerPort() + "/orders/mydelivery";
+			 url = "https://" + request.getServerName() + "/orders/mydelivery";
 		     text = text.replace("[[URL]]", url);
 		}
 		order.setStatus(status);

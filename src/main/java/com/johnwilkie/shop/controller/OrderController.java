@@ -172,7 +172,7 @@ public class OrderController {
 	    		+ "<p> " + order.getBikeprod().getProdname() + " : " + order.getVariation() + " with the reference number of <span style=\"color: lightblue;\">" + order.getOrdercode() +"</span> </p>"
 	    		+ "<p>You may check the cancellation request by clicking the link down below</p>"
 	    		+ "<h3><a href=\"[[URL]]\" target=\"self\">View Cancellations</a></h3>";
-	    	String url="http://" + request.getServerName() + ":" + request.getServerPort() + "/admin/cancels";
+	    	String url="https://" + request.getServerName() + "/admin/cancels";
 	      text = text.replace("[[URL]]", url);
 	      try {
 		    	 helper.setFrom("aeonkatana@gmail.com", "John Wilkie's Online Bike Shop");

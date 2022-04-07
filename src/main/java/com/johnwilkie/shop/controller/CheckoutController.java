@@ -137,10 +137,10 @@ public class CheckoutController {
     +  " \n From John Wilkie's Bike Shop";
       String url = "";
       if(orderType.equalsIgnoreCase("cop")) {
-    	  url = "http://" + request.getServerName() + ":" + request.getServerPort() + "/orders/mypickup";
+    	  url = "https://" + request.getServerName() + "/orders/mypickup";
       }
       else
-    	  url="http://" + request.getServerName() + ":" + request.getServerPort() + "/orders/mydelivery";
+    	  url="https://" + request.getServerName() + "/orders/mydelivery";
       text = text.replace("[[URL]]", url);
       try {
     	 helper.setFrom("aeonkatana@gmail.com", "John Wilkie's Online Bike Shop");
@@ -155,7 +155,7 @@ public class CheckoutController {
       String text2 = userdetails.getUser().getFname() +" has placed an order/s with the reference/s" + orderrefs +
      " <p>You may start checking the orders on the link below and start preparing</p>" +
     " \nClick the link to view the orders  <h3><a href=\"[[URL]]\" target=\"self\"> View my orders </a></h3>";
-      String url2 = "http://" + request.getServerName() + ":" + request.getServerPort() + "/admin/orders";
+      String url2 = "https://" + request.getServerName() + "/admin/orders";
       text2 = text2.replace("[[URL]]", url2);
       try {
     	 helper2.setFrom("aeonkatana@gmail.com", "John Wilkie's Online Bike Shop");
