@@ -88,6 +88,36 @@ xmlns="http://www.w3.org/1999/xhtml"
 </head>
 
 <body>
+<!-- Messenger Chat Plugin Code -->
+    <div id="fb-root"></div>
+
+    <!-- Your Chat Plugin code -->
+    <div id="fb-customer-chat" class="fb-customerchat">
+    </div>
+
+    <script>
+      var chatbox = document.getElementById('fb-customer-chat');
+      chatbox.setAttribute("page_id", "100104912636871");
+      chatbox.setAttribute("attribution", "biz_inbox");
+    </script>
+
+    <!-- Your SDK code -->
+    <script>
+      window.fbAsyncInit = function() {
+        FB.init({
+          xfbml            : true,
+          version          : 'v13.0'
+        });
+      };
+
+      (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = 'https://connect.facebook.net/en_US/sdk/xfbml.customerchat.js';
+        fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'facebook-jssdk'));
+    </script>
 	<div class="m-0">
 
 		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -205,6 +235,17 @@ xmlns="http://www.w3.org/1999/xhtml"
 		</div>
 
 	</div>
+	
+	<footer class="bg-dark p-1">
+		<p class="text-light"></p>
+		
+		
+		<pre class="text-light text-right">© John Wilkie's Bike and Parts
+Since 1980 
+Contact No: 09564412627
+Email : aeonkatana@gmail.com</pre>
+	</footer>
+	
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
 		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
 		crossorigin="anonymous"></script>

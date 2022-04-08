@@ -397,12 +397,16 @@ $(document).ready(function(){
 			processData : false,
 			success : function(result){
 				$("#savenewprod").prop("disabled",false);
-		$("#closeedit").prop("disabled",false);
+				$("#closeedit").prop("disabled",false);
 				$("#savenewprod").text("Done");
 			    $("#addnotif").modal('show');
 			    $("#closenotif").click(function(){
 					window.location.reload();
 				});
+			},
+			error : function(result){
+				$("#savenewprod").text("Retry");
+				alert("Please use low size image");
 			}
 		}) 
 	});
@@ -466,6 +470,13 @@ $(document).ready(function(){
 			}
 		})
 		
+	});
+	
+	$("#ap").click(function(){
+		
+		
+		$("#savenewprod").text("Save Changes");
+		$("#savenewprod").prop("disabled",false);
 	});
 	
 	

@@ -24,7 +24,7 @@ xmlns="http://www.w3.org/1999/xhtml"
 <link rel="stylesheet" th:href="@{/css/simplePagination.css}">
 	<style>
 		.mycontainer {
-			width: 90%;
+			width: 100%;
 			margin-left: auto;
 			margin-right: auto;
 
@@ -114,7 +114,7 @@ xmlns="http://www.w3.org/1999/xhtml"
 
 		</nav>
 	</div>
-	<div class="mycontainer container my-2" th:if="${totalpage != 0}">
+	<div class="mycontainer container my-2" th:if="${totalpage != 0}" >
 		
 		
 	   <h3 class="text-left mt-3 text-primary" th:if="${categoryname != null}" th:text="${'Category : ' + categoryname}"></h3>
@@ -163,6 +163,8 @@ xmlns="http://www.w3.org/1999/xhtml"
 			</ul>
 		</nav>
 	</div>
+	
+	
 	<script th:src="@{/js/jquery-3.6.0.min.js}"></script>
 <script th:src="@{/js/jquery.simplePagination.js}"></script>
 <script th:inline="javascript" th:src="@{/js/prodlist.js}"></script>
